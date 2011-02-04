@@ -1,0 +1,10 @@
+##########################
+## Building SuplChecker ##
+##########################
+
+in src/ folder:
+    qmake SuplChecker.pro
+    make (unix) or nmake (Windows)
+
+move compiled binary to data/ folder
+execute binary from data/
