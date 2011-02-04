@@ -1,0 +1,24 @@
+#-------------------------------------------------
+#
+# Project created by QtCreator 2010-11-28T18:32:00
+#
+#-------------------------------------------------
+
+QT       += core gui webkit sql
+
+TARGET = SuplChecker
+TEMPLATE = app
+
+SOURCES = main.cpp\
+        mainwindow.cpp \
+    parser.cpp \
+    nastaveni.cpp
+
+HEADERS  += mainwindow.h \
+    parser.h \
+    nastaveni.h
+
+FORMS    += mainwindow.ui \
+    nastaveni.ui
+
+RESOURCES += icons.qrc

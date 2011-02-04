@@ -1,0 +1,8 @@
+###############################
+##        SuplChecker        ##
+###############################
+
+Checker for changes in timetable at our school.
+Written in Qt Framework and compatible with http://bakalari.cz/ system.
+
+http://www.suplchecker.wz.cz
