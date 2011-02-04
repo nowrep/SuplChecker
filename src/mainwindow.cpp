@@ -116,8 +116,8 @@ void MainWindow::zacni_loadovat(QString uzjmeno, QString uzheslo, QString server
 
 void MainWindow::info_o_programu()
 {
-    QMessageBox msgBox;
-    msgBox.setText("<h1>SuplChecker 0.2</h1>Jednoduchý checker suplů a známek<br/><br/><b>Autor:</b> nowrep/><b>Poděkování:</b> Rajnymu a Patrickovi<br/><br/><small>Build time: 06/12/2010 20:57<br/>Copyright (C) 2010-2011 nowrep<a href='http://suplchecker.wz.cz'>http://suplchecker.wz.cz</a>");
+    QMessageBox msgBox(this);
+    msgBox.setText("<h1>SuplChecker 0.2</h1>Jednoduchý checker suplů a známek<br/><br/><b>Autor:</b> nowrep<br/><b>Poděkování:</b> Rajnymu a Patrickovi<br/><br/><small>Build time: 06/12/2010 20:57<br/>Copyright (C) 2010-2011 nowrep<br/><a href='http://suplchecker.wz.cz'>http://suplchecker.wz.cz</a>");
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowIcon(QIcon(":icon.png"));
     msgBox.setIconPixmap(QPixmap(":icon.png"));
@@ -126,7 +126,7 @@ void MainWindow::info_o_programu()
 
 void MainWindow::udaje()
 {
-    nastaveni window(this);
+    nastaveni window(this,this);
     window.exec();
 }
 

@@ -136,6 +136,7 @@ void nastaveni::smazat_uziv()
 
 void nastaveni::zobraz_kliknuty(QTreeWidgetItem *item, int column)
 {
+    Q_UNUSED(column);
     QSqlQuery query;
     query.prepare("SELECT jmeno,heslo,server FROM users WHERE jmeno=?");
     query.bindValue(0,item->text(0));
