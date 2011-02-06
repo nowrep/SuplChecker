@@ -45,6 +45,8 @@ public:
     explicit SuplChecker(QWidget *parent = 0);
     ~SuplChecker();
 
+    void aktualizujUzivatele();
+
 public slots:
     void zacni_loadovat(QString uzjmeno, QString uzheslo, QString server);
 
@@ -68,7 +70,6 @@ private slots:
     void nacti(QString info);
     void loadAction();
     void opakovat();
-    void aktualizujUzivatele();
     void vybrano(QString text);
 };
 #endif // MAINWINDOW_H

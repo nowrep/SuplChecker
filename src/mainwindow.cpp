@@ -50,6 +50,12 @@ SuplChecker::SuplChecker(QWidget *parent) :
     closeToolbar->setMovable(false);
     addToolBar(closeToolbar);
 
+#ifdef Q_WS_WIN
+    toolbar->setStyleSheet("QToolBar{background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 white, stop:1 #d4dbee); border: none; }");
+    closeToolbar->setStyleSheet("QToolBar{background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 white, stop:1 #d4dbee); border:none; }");
+    ui->tabWidget->setStyleSheet("QTabBar{background-color: #d4dbee; } QTabWidget{border: none;}");
+#endif
+
     vycentruj();
     // SQLite Database connection
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
@@ -63,8 +69,6 @@ SuplChecker::SuplChecker(QWidget *parent) :
         msgBox.exec();
         return;
     }
-
-    aktualizujUzivatele();
 
     QSqlQuery query;
     query.exec("SELECT jmeno, heslo, server FROM users ORDER by naposledy DESC");
@@ -80,6 +84,8 @@ SuplChecker::SuplChecker(QWidget *parent) :
         zacni_loadovat(jmeno,heslo,server);
     }
     aktShown=0;
+
+    aktualizujUzivatele();
 }
 
 void SuplChecker::setLoading(bool set)
@@ -233,12 +239,12 @@ void SuplChecker::opakovat()
 
 void SuplChecker::aktualizujUzivatele()
 {
-
-        QSqlQuery query;
-        query.exec("SELECT jmeno FROM users WHERE jmeno<>'"+aktJmeno+"'ORDER BY naposledy");
-        while(query.next()){
-            actMenu->addAction("Načíst uživatele "+query.value(0).toString(), this, SLOT(loadAction()))->setData(query.value(0).toString());
-        }
+    actMenu->clear();
+    QSqlQuery query;
+    query.exec("SELECT jmeno FROM users ORDER BY naposledy");
+    while(query.next()){
+        actMenu->addAction("Načíst uživatele "+query.value(0).toString(), this, SLOT(loadAction()))->setData(query.value(0).toString());
+    }
 }
 
 void SuplChecker::vybrano(QString text)
