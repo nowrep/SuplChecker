@@ -30,32 +30,35 @@
 #include <QToolBar>
 #include <QMenu>
 #include <QToolButton>
+#include <QWebFrame>
 
 namespace Ui {
-    class MainWindow;
+    class SuplChecker;
 }
 
-class MainWindow : public QMainWindow
+class SuplChecker : public QMainWindow
 {
     Q_OBJECT
 
 public:
     void go();
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit SuplChecker(QWidget *parent = 0);
+    ~SuplChecker();
 
 public slots:
     void zacni_loadovat(QString uzjmeno, QString uzheslo, QString server);
 
 private:
-    Ui::MainWindow *ui;
+    Ui::SuplChecker *ui;
     int spatneUdaje;
     int aktShown;
     QString aktJmeno;
     QToolButton* actUser;
     QMenu* actMenu;
+    bool isLoading;
 
 private slots:
+    void setLoading(bool set);
     void vycentruj();
     void info_o_programu();
     void chyba(QString text);
@@ -63,6 +66,7 @@ private slots:
     void aktualizace(QString stara, QString nova, QString changelog);
     void jmeno(QString jmeno, QString trida);
     void nacti(QString info);
+    void loadAction();
     void opakovat();
     void aktualizujUzivatele();
     void vybrano(QString text);

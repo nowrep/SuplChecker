@@ -19,19 +19,16 @@
 #include "parser.h"
 #include "nastaveni.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::MainWindow)
+SuplChecker::SuplChecker(QWidget *parent) :
+    QMainWindow(parent)
+    ,ui(new Ui::SuplChecker)
+    ,isLoading(false)
 {
     ui->setupUi(this);
-    ui->tabWidget->setCornerWidget(ui->comJmeno);
-    ui->comJmeno->setHidden(true);
-    ui->tabWidget->setCornerWidget(ui->butJmeno);
 
     QToolBar* toolbar = new QToolBar(this);
-    toolbar->addSeparator();
     toolbar->addAction(QIcon(":/icons/reload.png"), "Obnovit", this, SLOT(opakovat()));
-    toolbar->addAction(QIcon(":/icons/bullet_wrench_red.png"), "Údaje", this, SLOT(udaje()));
-    toolbar->addSeparator();
+    toolbar->addAction(QIcon(":/icons/book.png"), "Nastavit údaje", this, SLOT(udaje()));
     toolbar->addAction(QIcon(":/icons/about.png"), "O programu", this, SLOT(info_o_programu()));
     toolbar->addSeparator();
 
@@ -44,10 +41,11 @@ MainWindow::MainWindow(QWidget *parent) :
     toolbar->addWidget(actUser);
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     toolbar->setMovable(false);
+    toolbar->setIconSize(QSize(20,20));
 
     addToolBar(toolbar);
     QToolBar* closeToolbar = new QToolBar(this);
-    closeToolbar->addAction(QIcon(":/icons/bullet_cross.png"), "Konec", this, SLOT(close()));
+    closeToolbar->addAction(QIcon(":/icons/exit.png"), "Konec", this, SLOT(close()));
     closeToolbar->setLayoutDirection(Qt::RightToLeft);
     closeToolbar->setMovable(false);
     addToolBar(closeToolbar);
@@ -79,26 +77,28 @@ MainWindow::MainWindow(QWidget *parent) :
     if (jmeno=="" || heslo=="" || server=="") {
         udaje();
      } else {
-        QDateTime now = QDateTime::currentDateTime();
-        query.prepare("UPDATE users SET naposledy=? WHERE jmeno=?");
-        query.bindValue(0,now.toMSecsSinceEpoch());
-        query.bindValue(1,jmeno);
-        query.exec();
         zacni_loadovat(jmeno,heslo,server);
     }
     aktShown=0;
 }
 
-void MainWindow::vycentruj()
+void SuplChecker::setLoading(bool set)
+{
+    isLoading = set;
+}
+
+void SuplChecker::vycentruj()
 {
     const QRect screen=QApplication::desktop()->screenGeometry();
     const QRect &size=QWidget::geometry();
     QWidget::move( (screen.width()-size.width())/2, (screen.height()-size.height())/2 );
 }
 
-void MainWindow::zacni_loadovat(QString uzjmeno, QString uzheslo, QString server)
+void SuplChecker::zacni_loadovat(QString uzjmeno, QString uzheslo, QString server)
 {
-    ui->butJmeno->setText("Načítám ...");
+    if (isLoading)
+        return;
+    actUser->setText("Načítám ...");
     spatneUdaje=0;
     if (QFile("data/tentotyden.html").exists())
     {
@@ -123,10 +123,19 @@ void MainWindow::zacni_loadovat(QString uzjmeno, QString uzheslo, QString server
     ui->webView_4->setUrl(QUrl("data/loading.html"));
 
     //in new thread -> start();
-#ifndef QT_NO_DEBUG
-    qDebug() << "PAUSED FOR TESTING";
-    return;
-#endif
+//#ifndef QT_NO_DEBUG
+//    qDebug() << "PAUSED FOR TESTING";
+//    return;
+//#endif
+
+    QSqlQuery query;
+    QDateTime now = QDateTime::currentDateTime();
+    query.prepare("UPDATE users SET naposledy=? WHERE jmeno=?");
+    query.bindValue(0,now.toMSecsSinceEpoch());
+    query.bindValue(1,uzjmeno);
+    query.exec();
+
+
     aktJmeno=uzjmeno;
     Parser *vlakno = new Parser(uzjmeno,uzheslo,server);
     connect(vlakno, SIGNAL(jmeno(QString,QString)),this, SLOT(jmeno(QString,QString)),Qt::QueuedConnection);
@@ -134,11 +143,12 @@ void MainWindow::zacni_loadovat(QString uzjmeno, QString uzheslo, QString server
     connect(vlakno, SIGNAL(done(QString)),this, SLOT(nacti(QString)),Qt::QueuedConnection);
     connect(vlakno, SIGNAL(chyba(QString)),this, SLOT(chyba(QString)),Qt::QueuedConnection);
     connect(vlakno, SIGNAL(zobraz_udaje()),this, SLOT(udaje()),Qt::QueuedConnection);
+    connect(vlakno, SIGNAL(loading(bool)),this, SLOT(setLoading(bool)),Qt::QueuedConnection);
     vlakno->start();
 
 }
 
-void MainWindow::info_o_programu()
+void SuplChecker::info_o_programu()
 {
     QMessageBox msgBox(this);
     msgBox.setText("<h1>SuplChecker 0.2</h1>Jednoduchý checker suplů a známek<br/><br/><b>Autor:</b> nowrep<br/><b>Poděkování:</b> Rajnymu a Patrickovi<br/>"
@@ -149,13 +159,13 @@ void MainWindow::info_o_programu()
     msgBox.exec();
 }
 
-void MainWindow::udaje()
+void SuplChecker::udaje()
 {
     nastaveni window(this,this);
     window.exec();
 }
 
-void MainWindow::nacti(QString info)
+void SuplChecker::nacti(QString info)
 {
     if (spatneUdaje==0){
     if (info=="tentotyden.html")
@@ -177,26 +187,26 @@ void MainWindow::nacti(QString info)
     }
 }
 
-void MainWindow::go()
+void SuplChecker::go()
 {
     qDebug() << "go";
 }
 
-void MainWindow::jmeno(QString jmeno, QString trida)
+void SuplChecker::jmeno(QString jmeno, QString trida)
 {
     if (jmeno!=""){
-        ui->butJmeno->setText(jmeno+" ("+trida+")");
+        actUser->setText(jmeno+" ("+trida+")");
     }else{
         spatneUdaje=1;
-        ui->butJmeno->setText("Nesprávné údaje!");
+        actUser->setText("Nesprávné údaje!");
     }
 }
 
-void MainWindow::aktualizace(QString stara, QString nova, QString changelog)
+void SuplChecker::aktualizace(QString stara, QString nova, QString changelog)
 {
     if (aktShown==0){
     aktShown=1;
-    QMessageBox msgBox;
+    QMessageBox msgBox(this);
     msgBox.setWindowTitle("Aktualizace!");
     msgBox.setText("<h2>Je dostupná aktualizace programu!</h2><b>Vaše verze: </b>"+stara+"<br/><b>Nová verze: </b>"+nova+"<br/><br/>"+changelog+"<br/><br/>"
                    "<small><a href='http://suplchecker.wz.cz/download.php'>Novou verzi stáhnete zde!</a></small>");
@@ -206,7 +216,7 @@ void MainWindow::aktualizace(QString stara, QString nova, QString changelog)
     }
 }
 
-void MainWindow::chyba(QString text)
+void SuplChecker::chyba(QString text)
 {
     QMessageBox msgBox;
     msgBox.setWindowTitle("Chyba!");
@@ -216,22 +226,22 @@ void MainWindow::chyba(QString text)
     msgBox.exec();
 }
 
-void MainWindow::opakovat()
+void SuplChecker::opakovat()
 {
     vybrano(aktJmeno);
 }
 
-void MainWindow::aktualizujUzivatele()
+void SuplChecker::aktualizujUzivatele()
 {
 
         QSqlQuery query;
         query.exec("SELECT jmeno FROM users WHERE jmeno<>'"+aktJmeno+"'ORDER BY naposledy");
         while(query.next()){
-            actMenu->addAction(query.value(0).toString(), this, SLOT(loadAction()))->setData(query.value(0).toString());
+            actMenu->addAction("Načíst uživatele "+query.value(0).toString(), this, SLOT(loadAction()))->setData(query.value(0).toString());
         }
 }
 
-void MainWindow::vybrano(QString text)
+void SuplChecker::vybrano(QString text)
 {
     QSqlQuery query;
     query.exec("SELECT jmeno, heslo, server FROM users WHERE jmeno='"+text+"'");
@@ -240,15 +250,16 @@ void MainWindow::vybrano(QString text)
     QString heslo = query.value(1).toString();
     QString server = query.value(2).toString();
 
-    ui->comJmeno->setHidden(true);
-    disconnect(ui->comJmeno, SIGNAL(currentIndexChanged ( const QString &)), this, SLOT(vybrano(QString)));
-    ui->butJmeno->setHidden(false);
-    ui->tabWidget->setCornerWidget(ui->butJmeno);
-    ui->butJmeno->setText("Načítám...");
     zacni_loadovat(jmeno,heslo,server);
 }
 
-MainWindow::~MainWindow()
+void SuplChecker::loadAction()
+{
+    if (QAction *action = qobject_cast<QAction*>(sender()))
+        vybrano(action->data().toString());
+}
+
+SuplChecker::~SuplChecker()
 {
     delete ui;
 }

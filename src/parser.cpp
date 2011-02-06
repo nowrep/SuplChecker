@@ -203,11 +203,12 @@ void Parser::parsuj_dalsi(QString zdroj,QString soubor)
         QString captured = rx.cap(0);
 
         QFile file("data/"+soubor);
-        QByteArray data;
         file.open(QIODevice::ReadWrite | QIODevice::Text);
+        QByteArray data;
         data.append(zac_html);
         data.append("<link rel='stylesheet' href='basicstyl.css' type='text/css' media='screen' /><center><h1>Průběžná klasifikace</h1>");
         data.append(captured);
+        data.append(kon_tabulky);
         data.append(kon_html);
         file.write(data);
         file.close();
@@ -237,6 +238,7 @@ void Parser::run()
 
 void Parser::pracuj()
 {
+    emit loading(true);
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     QByteArray postData;
     postData.append("ctl00$cphmain$TextBoxjmeno="+uzJmeno+"&");
@@ -298,7 +300,7 @@ void Parser::pracuj()
     parsuj_dalsi(znamky,"znamky.html");
 
     //Check new version::
-    QString current_version="0.2 (6.12.2010)";
+    QString current_version="0.5 (6.2.2011)";
     QString actual_version=send_request(manager,"http://suplchecker.wz.cz/version.php");
 
     if (!actual_version.contains(current_version) && actual_version.contains("Aktuální verze: ")){
@@ -306,4 +308,5 @@ void Parser::pracuj()
         emit aktualizace(current_version,actual_version.replace("Aktuální verze: ",""),changelog);
     }
     //else->file.open
+    emit loading(false);
 }

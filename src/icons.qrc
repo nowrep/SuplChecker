@@ -6,5 +6,8 @@
         <file>icons/icon.png</file>
         <file>icons/reload.png</file>
         <file>icon.png</file>
+        <file>icons/book.png</file>
+        <file>icons/exit.png</file>
+        <file>icons/question.png</file>
     </qresource>
 </RCC>

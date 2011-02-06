@@ -23,12 +23,12 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     QTranslator translator;
-    translator.load("qt_cs.qm");
+    translator.load("data/qt_cs.qm");
     a.installTranslator(&translator);
 
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
-    MainWindow w;
+    SuplChecker w;
     w.show();
 
     return a.exec();

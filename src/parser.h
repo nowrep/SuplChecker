@@ -34,6 +34,7 @@ signals:
    void chyba(const QString &text);
    void zobraz_udaje();
    void done(const QString &results);
+   void loading(bool state);
 
 private:
    QString uzJmeno;
