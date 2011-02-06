@@ -23,23 +23,24 @@
 #include <QFile>
 #include <QDebug>
 #include <QTreeWidgetItem>
-#include "mainwindow.h"
+#include <QSqlQuery>
 
 namespace Ui {
     class nastaveni;
 }
 
+class SuplChecker;
 class nastaveni : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit nastaveni(MainWindow* mainWindow,QWidget *parent = 0);
+    explicit nastaveni(SuplChecker* mainWindow,QWidget *parent = 0);
     ~nastaveni();
 
 private:
     Ui::nastaveni *ui;
-    MainWindow* mainwindow;
+    SuplChecker* mainwindow;
     QString aktJmeno;
 
 private slots:

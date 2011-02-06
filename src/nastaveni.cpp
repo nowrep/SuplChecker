@@ -16,8 +16,9 @@
 */
 #include "nastaveni.h"
 #include "ui_nastaveni.h"
+#include "mainwindow.h"
 
-nastaveni::nastaveni(MainWindow* mainWindow,QWidget *parent) :
+nastaveni::nastaveni(SuplChecker* mainWindow,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::nastaveni)
 {
@@ -50,6 +51,7 @@ nastaveni::nastaveni(MainWindow* mainWindow,QWidget *parent) :
     }
     aktualizuj_tabulku();
 
+    connect(ui->buttonBox2, SIGNAL(rejected()), this, SLOT(close()));
     connect(ui->buttonBox2, SIGNAL(accepted()), this, SLOT(nacti()));
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(zapis_udaje()));
 
@@ -125,6 +127,8 @@ void nastaveni::pridat_uziv()
 
 void nastaveni::smazat_uziv()
 {
+    if (!ui->treeWidget->currentItem())
+        return;
     QString akt=ui->treeWidget->currentItem()->text(0);
     QSqlQuery query;
     query.exec("DELETE FROM users WHERE jmeno='"+akt+"'");
