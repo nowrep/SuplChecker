@@ -27,6 +27,9 @@
 #include <QTextCodec>
 #include <QPushButton>
 #include <QtSql>
+#include <QToolBar>
+#include <QMenu>
+#include <QToolButton>
 
 namespace Ui {
     class MainWindow;
@@ -49,6 +52,8 @@ private:
     int spatneUdaje;
     int aktShown;
     QString aktJmeno;
+    QToolButton* actUser;
+    QMenu* actMenu;
 
 private slots:
     void vycentruj();
@@ -59,7 +64,7 @@ private slots:
     void jmeno(QString jmeno, QString trida);
     void nacti(QString info);
     void opakovat();
-    void zobraz_vyber();
+    void aktualizujUzivatele();
     void vybrano(QString text);
 };
 #endif // MAINWINDOW_H

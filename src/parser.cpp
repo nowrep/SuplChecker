@@ -144,7 +144,7 @@ void Parser::parsuj_tyden(QString zdroj,QString soubor)
         zac_tabulky="";
     }
     QString datum=vrat_tyden(zdroj);
-    QFile file(soubor);
+    QFile file("data/"+soubor);
     file.open(QIODevice::ReadWrite | QIODevice::Text);
     QByteArray data;
     data.append(zac_html);
@@ -182,7 +182,7 @@ void Parser::parsuj_dalsi(QString zdroj,QString soubor)
         rx.indexIn(zdroj);
         QString captured = rx.cap(0);
 
-        QFile file(soubor);
+        QFile file("data/"+soubor);
         QByteArray data;
         file.open(QIODevice::ReadWrite | QIODevice::Text);
         data.append(zac_html);
@@ -202,7 +202,7 @@ void Parser::parsuj_dalsi(QString zdroj,QString soubor)
         rx.indexIn(zdroj);
         QString captured = rx.cap(0);
 
-        QFile file(soubor);
+        QFile file("data/"+soubor);
         QByteArray data;
         file.open(QIODevice::ReadWrite | QIODevice::Text);
         data.append(zac_html);

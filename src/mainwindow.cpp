@@ -27,10 +27,35 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comJmeno->setHidden(true);
     ui->tabWidget->setCornerWidget(ui->butJmeno);
 
+    QToolBar* toolbar = new QToolBar(this);
+    toolbar->addSeparator();
+    toolbar->addAction(QIcon(":/icons/reload.png"), "Obnovit", this, SLOT(opakovat()));
+    toolbar->addAction(QIcon(":/icons/bullet_wrench_red.png"), "Údaje", this, SLOT(udaje()));
+    toolbar->addSeparator();
+    toolbar->addAction(QIcon(":/icons/about.png"), "O programu", this, SLOT(info_o_programu()));
+    toolbar->addSeparator();
+
+    actUser = new QToolButton(this);
+    actUser->setText("Nevybrán uživatel");
+    actUser->setPopupMode(QToolButton::InstantPopup);
+    actMenu = new QMenu(this);
+    actUser->setMenu(actMenu);
+
+    toolbar->addWidget(actUser);
+    toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    toolbar->setMovable(false);
+
+    addToolBar(toolbar);
+    QToolBar* closeToolbar = new QToolBar(this);
+    closeToolbar->addAction(QIcon(":/icons/bullet_cross.png"), "Konec", this, SLOT(close()));
+    closeToolbar->setLayoutDirection(Qt::RightToLeft);
+    closeToolbar->setMovable(false);
+    addToolBar(closeToolbar);
+
     vycentruj();
     // SQLite Database connection
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("checker.db");
+    db.setDatabaseName("data/checker.db");
     if (!db.open()) {
         QMessageBox msgBox;
         msgBox.setWindowTitle("Chyba!");
@@ -40,6 +65,9 @@ MainWindow::MainWindow(QWidget *parent) :
         msgBox.exec();
         return;
     }
+
+    aktualizujUzivatele();
+
     QSqlQuery query;
     query.exec("SELECT jmeno, heslo, server FROM users ORDER by naposledy DESC");
     query.next();
@@ -48,25 +76,17 @@ MainWindow::MainWindow(QWidget *parent) :
     QString server = query.value(2).toString();
     query.clear();
 
-    if (jmeno=="" || heslo=="" || server==""){
+    if (jmeno=="" || heslo=="" || server=="") {
         udaje();
-    }else{
-    QDateTime now = QDateTime::currentDateTime();
-    query.prepare("UPDATE users SET naposledy=? WHERE jmeno=?");
-    query.bindValue(0,now.toMSecsSinceEpoch());
-    query.bindValue(1,jmeno);
-    query.exec();
-    zacni_loadovat(jmeno,heslo,server);
+     } else {
+        QDateTime now = QDateTime::currentDateTime();
+        query.prepare("UPDATE users SET naposledy=? WHERE jmeno=?");
+        query.bindValue(0,now.toMSecsSinceEpoch());
+        query.bindValue(1,jmeno);
+        query.exec();
+        zacni_loadovat(jmeno,heslo,server);
     }
     aktShown=0;
-
-    connect(ui->actionOpakovat, SIGNAL(triggered()), this, SLOT(opakovat()));
-    connect(ui->actionO_programu, SIGNAL(triggered()), this, SLOT(info_o_programu()));
-
-    connect(ui->butJmeno, SIGNAL(clicked()), this, SLOT(zobraz_vyber()));
-    connect(ui->actionUdaje, SIGNAL(triggered()), this, SLOT(udaje()));
-    connect(ui->actionZavrit, SIGNAL(triggered()), this, SLOT(close()));
-
 }
 
 void MainWindow::vycentruj()
@@ -80,29 +100,33 @@ void MainWindow::zacni_loadovat(QString uzjmeno, QString uzheslo, QString server
 {
     ui->butJmeno->setText("Načítám ...");
     spatneUdaje=0;
-    if (QFile("tentotyden.html").exists())
+    if (QFile("data/tentotyden.html").exists())
     {
-        QFile("tentotyden.html").remove();
+        QFile("data/tentotyden.html").remove();
     }
-    if (QFile("dalsityden.html").exists())
+    if (QFile("data/dalsityden.html").exists())
     {
-        QFile("dalsityden.html").remove();
+        QFile("data/dalsityden.html").remove();
     }
-    if (QFile("stalyrozvrh.html").exists())
+    if (QFile("data/stalyrozvrh.html").exists())
     {
-        QFile("stalyrozvrh.html").remove();
+        QFile("data/stalyrozvrh.html").remove();
     }
-    if (QFile("znamky.html").exists())
+    if (QFile("data/znamky.html").exists())
     {
-        QFile("znamky.html").remove();
+        QFile("data/znamky.html").remove();
     }
 
-    ui->webView_1->setUrl(QUrl("loading.html"));
-    ui->webView_2->setUrl(QUrl("loading.html"));
-    ui->webView_3->setUrl(QUrl("loading.html"));
-    ui->webView_4->setUrl(QUrl("loading.html"));
+    ui->webView_1->setUrl(QUrl("data/loading.html"));
+    ui->webView_2->setUrl(QUrl("data/loading.html"));
+    ui->webView_3->setUrl(QUrl("data/loading.html"));
+    ui->webView_4->setUrl(QUrl("data/loading.html"));
 
     //in new thread -> start();
+#ifndef QT_NO_DEBUG
+    qDebug() << "PAUSED FOR TESTING";
+    return;
+#endif
     aktJmeno=uzjmeno;
     Parser *vlakno = new Parser(uzjmeno,uzheslo,server);
     connect(vlakno, SIGNAL(jmeno(QString,QString)),this, SLOT(jmeno(QString,QString)),Qt::QueuedConnection);
@@ -117,7 +141,8 @@ void MainWindow::zacni_loadovat(QString uzjmeno, QString uzheslo, QString server
 void MainWindow::info_o_programu()
 {
     QMessageBox msgBox(this);
-    msgBox.setText("<h1>SuplChecker 0.2</h1>Jednoduchý checker suplů a známek<br/><br/><b>Autor:</b> nowrep<br/><b>Poděkování:</b> Rajnymu a Patrickovi<br/><br/><small>Build time: 06/12/2010 20:57<br/>Copyright (C) 2010-2011 nowrep<br/><a href='http://suplchecker.wz.cz'>http://suplchecker.wz.cz</a>");
+    msgBox.setText("<h1>SuplChecker 0.2</h1>Jednoduchý checker suplů a známek<br/><br/><b>Autor:</b> nowrep<br/><b>Poděkování:</b> Rajnymu a Patrickovi<br/>"
+                   "<br/><small>Build time: 06/12/2010 20:57<br/>Copyright (C) 2010-2011 nowrep<br/><a href='http://suplchecker.wz.cz'>http://suplchecker.wz.cz</a>");
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowIcon(QIcon(":icon.png"));
     msgBox.setIconPixmap(QPixmap(":icon.png"));
@@ -134,13 +159,13 @@ void MainWindow::nacti(QString info)
 {
     if (spatneUdaje==0){
     if (info=="tentotyden.html")
-        ui->webView_1->setUrl(QUrl("tentotyden.html"));
+        ui->webView_1->setUrl(QUrl("data/tentotyden.html"));
     if (info=="dalsityden.html")
-        ui->webView_2->setUrl(QUrl("dalsityden.html"));
+        ui->webView_2->setUrl(QUrl("data/dalsityden.html"));
     if (info=="stalyrozvrh.html")
-        ui->webView_3->setUrl(QUrl("stalyrozvrh.html"));
+        ui->webView_3->setUrl(QUrl("data/stalyrozvrh.html"));
     if (info=="znamky.html")
-        ui->webView_4->setUrl(QUrl("znamky.html"));
+        ui->webView_4->setUrl(QUrl("data/znamky.html"));
     }else if (spatneUdaje!=5){
         spatneUdaje=5;
         QMessageBox msgBox;
@@ -173,7 +198,8 @@ void MainWindow::aktualizace(QString stara, QString nova, QString changelog)
     aktShown=1;
     QMessageBox msgBox;
     msgBox.setWindowTitle("Aktualizace!");
-    msgBox.setText("<h2>Je dostupná aktualizace programu!</h2><b>Vaše verze: </b>"+stara+"<br/><b>Nová verze: </b>"+nova+"<br/><br/>"+changelog+"<br/><br/><small><a href='http://suplchecker.wz.cz/download.php'>Novou verzi stáhnete zde!</a></small>");
+    msgBox.setText("<h2>Je dostupná aktualizace programu!</h2><b>Vaše verze: </b>"+stara+"<br/><b>Nová verze: </b>"+nova+"<br/><br/>"+changelog+"<br/><br/>"
+                   "<small><a href='http://suplchecker.wz.cz/download.php'>Novou verzi stáhnete zde!</a></small>");
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowIcon(QIcon(":icon.png"));
     msgBox.exec();
@@ -195,23 +221,14 @@ void MainWindow::opakovat()
     vybrano(aktJmeno);
 }
 
-void MainWindow::zobraz_vyber()
+void MainWindow::aktualizujUzivatele()
 {
-        ui->butJmeno->setHidden(true);
-        ui->comJmeno->setHidden(false);
-        ui->tabWidget->setCornerWidget(ui->comJmeno);
 
-        ui->comJmeno->clear();
-
-        if (aktJmeno!=""){
-        ui->comJmeno->insertItem(0,aktJmeno);
-        }
         QSqlQuery query;
         query.exec("SELECT jmeno FROM users WHERE jmeno<>'"+aktJmeno+"'ORDER BY naposledy");
         while(query.next()){
-            ui->comJmeno->insertItem(0,query.value(0).toString());
+            actMenu->addAction(query.value(0).toString(), this, SLOT(loadAction()))->setData(query.value(0).toString());
         }
-        connect(ui->comJmeno, SIGNAL(currentIndexChanged ( const QString &)), this, SLOT(vybrano(QString)));
 }
 
 void MainWindow::vybrano(QString text)

@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>683</width>
-    <height>493</height>
+    <height>520</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,13 +22,13 @@
   <property name="minimumSize">
    <size>
     <width>683</width>
-    <height>493</height>
+    <height>520</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>683</width>
-    <height>493</height>
+    <height>520</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -223,78 +223,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>683</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuSuplChecker">
-    <property name="title">
-     <string>SuplChecker</string>
-    </property>
-    <addaction name="actionOpakovat"/>
-    <addaction name="actionO_programu"/>
-    <addaction name="separator"/>
-    <addaction name="actionZavrit"/>
-   </widget>
-   <widget class="QMenu" name="menuNataven">
-    <property name="title">
-     <string>Nastavení</string>
-    </property>
-    <addaction name="actionUdaje"/>
-   </widget>
-   <addaction name="menuSuplChecker"/>
-   <addaction name="menuNataven"/>
-  </widget>
-  <action name="actionZavrit">
-   <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/bullet_cross.png</normaloff>:/icons/bullet_cross.png</iconset>
-   </property>
-   <property name="text">
-    <string>Zavřít</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Q</string>
-   </property>
-  </action>
-  <action name="actionO_programu">
-   <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/about.png</normaloff>:/icons/about.png</iconset>
-   </property>
-   <property name="text">
-    <string>O programu</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
-   </property>
-  </action>
-  <action name="actionUdaje">
-   <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/bullet_wrench_red.png</normaloff>:/icons/bullet_wrench_red.png</iconset>
-   </property>
-   <property name="text">
-    <string>Přihlašovací údaje</string>
-   </property>
-  </action>
-  <action name="actionOpakovat">
-   <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/reload.png</normaloff>:/icons/reload.png</iconset>
-   </property>
-   <property name="text">
-    <string>Opakovat</string>
-   </property>
-   <property name="shortcut">
-    <string>F5</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
