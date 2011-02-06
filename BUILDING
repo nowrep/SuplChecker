@@ -10,7 +10,7 @@ craete folder for SuplChecker
 move compiled binary and data/ folder to your craeted folder
 execute binary from that:
 
-SuplChecker---------------
+SuplChecker/---------------
    |                     |
   data/              SuplChecker(.exe)
  |   |   |
