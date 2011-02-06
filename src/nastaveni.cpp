@@ -87,6 +87,8 @@ void nastaveni::zapis_udaje()
         ui->info->setText("Jméno a heslo by mělo mít 8 znaků (podle původních loginů)!");
     }
     }
+
+    mainwindow->aktualizujUzivatele();
 }
 
 void nastaveni::aktualizuj_tabulku()
@@ -136,6 +138,8 @@ void nastaveni::smazat_uziv()
     ui->jmeno->clear();
     ui->heslo->clear();
     aktualizuj_tabulku();
+
+    mainwindow->aktualizujUzivatele();
 }
 
 void nastaveni::zobraz_kliknuty(QTreeWidgetItem *item, int column)
