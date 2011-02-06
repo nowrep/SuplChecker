@@ -157,8 +157,8 @@ void SuplChecker::zacni_loadovat(QString uzjmeno, QString uzheslo, QString serve
 void SuplChecker::info_o_programu()
 {
     QMessageBox msgBox(this);
-    msgBox.setText("<h1>SuplChecker 0.2</h1>Jednoduchý checker suplů a známek<br/><br/><b>Autor:</b> nowrep<br/><b>Poděkování:</b> Rajnymu a Patrickovi<br/>"
-                   "<br/><small>Build time: 06/12/2010 20:57<br/>Copyright (C) 2010-2011 nowrep<br/><a href='http://suplchecker.wz.cz'>http://suplchecker.wz.cz</a>");
+    msgBox.setText("<h1>SuplChecker 0.5</h1>Jednoduchý checker suplů a známek<br/><br/><b>Autor:</b> nowrep<br/><b>Poděkování:</b> Rajnymu a Patrickovi<br/>"
+                   "<br/><small>Build time: 06/02/2011 14:44<br/>Copyright (C) 2010-2011 nowrep<br/><a href='http://suplchecker.wz.cz'>http://suplchecker.wz.cz</a>");
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowIcon(QIcon(":icon.png"));
     msgBox.setIconPixmap(QPixmap(":icon.png"));
