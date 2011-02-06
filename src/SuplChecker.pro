@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkit sql
+QT       += core gui webkit sql network
 
 TARGET = SuplChecker
 TEMPLATE = app
@@ -22,3 +22,8 @@ FORMS    += mainwindow.ui \
     nastaveni.ui
 
 RESOURCES += icons.qrc
+
+win32:RC_FILE = appicon.rc
+
+OTHER_FILES += \
+    appicon.rc
