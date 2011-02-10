@@ -6,7 +6,8 @@
 
 QT       += core gui webkit sql network
 
-TARGET = SuplChecker
+TARGET = suplchecker
+
 TEMPLATE = app
 
 SOURCES = main.cpp\
