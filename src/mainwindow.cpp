@@ -27,8 +27,9 @@ SuplChecker::SuplChecker(QWidget *parent) :
     ui->setupUi(this);
 
     QToolBar* toolbar = new QToolBar(this);
-    toolbar->addAction(QIcon(":/icons/reload.png"), "Obnovit", this, SLOT(opakovat()));
-    toolbar->addAction(QIcon(":/icons/book.png"), "Nastavit údaje", this, SLOT(udaje()));
+    toolbar->setContextMenuPolicy(Qt::CustomContextMenu);
+    toolbar->addAction(QIcon(":/icons/reload.png"), "Obnovit", this, SLOT(opakovat()))->setShortcut(QKeySequence("F5"));
+    toolbar->addAction(QIcon(":/icons/book.png"), "Nastavit údaje", this, SLOT(udaje()))->setShortcut(QKeySequence("Ctrl+P"));
     toolbar->addAction(QIcon(":/icons/about.png"), "O programu", this, SLOT(info_o_programu()));
     toolbar->addSeparator();
 
@@ -45,9 +46,10 @@ SuplChecker::SuplChecker(QWidget *parent) :
 
     addToolBar(toolbar);
     QToolBar* closeToolbar = new QToolBar(this);
-    closeToolbar->addAction(QIcon(":/icons/exit.png"), "Konec", this, SLOT(close()));
+    closeToolbar->addAction(QIcon(":/icons/exit.png"), "Konec", this, SLOT(close()))->setShortcut(QKeySequence("Ctrl+Q"));
     closeToolbar->setLayoutDirection(Qt::RightToLeft);
     closeToolbar->setMovable(false);
+    closeToolbar->setContextMenuPolicy(Qt::CustomContextMenu);
     addToolBar(closeToolbar);
 
 #ifdef Q_WS_WIN
