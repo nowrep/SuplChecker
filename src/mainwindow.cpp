@@ -16,12 +16,12 @@
 */
 #include "mainwindow.h"
 #include "parser.h"
-#include "nastaveni.h"
 
 #ifdef Q_OS_SYMBIAN
 #include "ui_mainwindowS60.h"
 #else
 #include "ui_mainwindow.h"
+#include "nastaveni.h"
 #endif
 
 SuplChecker::SuplChecker(QWidget *parent) :
@@ -202,8 +202,10 @@ void SuplChecker::info_o_programu()
 
 void SuplChecker::udaje()
 {
+#ifndef Q_OS_SYMBIAN
     nastaveni window(this,this);
     window.exec();
+#endif
 }
 
 void SuplChecker::nacti(QString info, QByteArray data)

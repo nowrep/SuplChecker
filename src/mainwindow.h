@@ -25,7 +25,9 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QPushButton>
+#ifndef Q_OS_SYMBIAN
 #include <QtSql>
+#endif
 #include <QToolBar>
 #include <QMenu>
 #include <QToolButton>
