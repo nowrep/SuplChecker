@@ -31,6 +31,10 @@
 #include <QMenu>
 #include <QToolButton>
 #include <QWebFrame>
+#include <QMenuBar>
+#include <QFlags>
+#include <QMenu>
+#include <QTranslator>
 
 namespace Ui {
     class SuplChecker;
@@ -44,6 +48,8 @@ public:
     void go();
     explicit SuplChecker(QWidget *parent = 0);
     ~SuplChecker();
+
+    const QString DATADIR;
 
     void aktualizujUzivatele();
 
@@ -59,6 +65,8 @@ private:
     QMenu* actMenu;
     bool isLoading;
 
+    enum StackedPages { CurrentWeek, NextWeek, Permanent, Marks };
+
 private slots:
     void setLoading(bool set);
     void vycentruj();
@@ -67,9 +75,11 @@ private slots:
     void udaje();
     void aktualizace(QString stara, QString nova, QString changelog);
     void jmeno(QString jmeno, QString trida);
-    void nacti(QString info);
+    void nacti(QString info, QByteArray data);
     void loadAction();
     void opakovat();
     void vybrano(QString text);
+
+    void showPageOnSymbian();
 };
 #endif // MAINWINDOW_H

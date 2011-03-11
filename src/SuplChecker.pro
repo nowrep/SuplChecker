@@ -20,7 +20,8 @@ HEADERS  += mainwindow.h \
     nastaveni.h
 
 FORMS    += mainwindow.ui \
-    nastaveni.ui
+    nastaveni.ui \
+    mainwindowS60.ui
 
 RESOURCES += icons.qrc
 

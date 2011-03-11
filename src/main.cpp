@@ -15,19 +15,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <QtGui/QApplication>
-#include <QTranslator>
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-    QTranslator translator;
-    translator.load("data/qt_cs.qm");
-    a.installTranslator(&translator);
-
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-
     SuplChecker w;
     w.show();
 
