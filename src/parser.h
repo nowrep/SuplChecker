@@ -33,7 +33,7 @@ signals:
    void aktualizace(const QString &nova, const QString &stara, const QString &changelog);
    void chyba(const QString &text);
    void zobraz_udaje();
-   void done(const QString &results);
+   void done(const QString &results, const QByteArray &data);
    void loading(bool state);
 
 private:

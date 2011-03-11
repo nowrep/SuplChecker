@@ -144,18 +144,18 @@ void Parser::parsuj_tyden(QString zdroj,QString soubor)
         zac_tabulky="";
     }
     QString datum=vrat_tyden(zdroj);
-    QFile file("data/"+soubor);
-    file.open(QIODevice::ReadWrite | QIODevice::Text);
+//    QFile file("data/"+soubor);
+//    file.open(QIODevice::ReadWrite | QIODevice::Text);
     QByteArray data;
     data.append(zac_html);
     data.append(zac_tabulky);
     data.append(datum);
     data.append(temp);
     data.append("</tbody></table></body></html>");
-    file.write(data);
-    file.close();
+//    file.write(data);
+//    file.close();
 
-    emit done(soubor);
+    emit done(soubor, data);
 }
 
 void Parser::vrat_jmeno(QString zdroj)
@@ -182,18 +182,18 @@ void Parser::parsuj_dalsi(QString zdroj,QString soubor)
         rx.indexIn(zdroj);
         QString captured = rx.cap(0);
 
-        QFile file("data/"+soubor);
+//        QFile file("data/"+soubor);
+//        file.open(QIODevice::ReadWrite | QIODevice::Text);
         QByteArray data;
-        file.open(QIODevice::ReadWrite | QIODevice::Text);
         data.append(zac_html);
         data.append("<center><h1>Stálý rozvrh</h1></center>");
         data.append(captured);
         data.append(kon_tabulky);
         data.append(kon_html);
-        file.write(data);
-        file.close();
+//        file.write(data);
+//        file.close();
 
-        emit done(soubor);
+        emit done(soubor, data);
     }
     else if (soubor=="znamky.html"){
         QString vyraz="<table class=\"radekznamky\">(.*)</tbody></table>";
@@ -202,18 +202,18 @@ void Parser::parsuj_dalsi(QString zdroj,QString soubor)
         rx.indexIn(zdroj);
         QString captured = rx.cap(0);
 
-        QFile file("data/"+soubor);
-        file.open(QIODevice::ReadWrite | QIODevice::Text);
+//        QFile file("data/"+soubor);
+//        file.open(QIODevice::ReadWrite | QIODevice::Text);
         QByteArray data;
         data.append(zac_html);
         data.append("<link rel='stylesheet' href='basicstyl.css' type='text/css' media='screen' /><center><h1>Průběžná klasifikace</h1>");
         data.append(captured);
         data.append(kon_tabulky);
         data.append(kon_html);
-        file.write(data);
-        file.close();
+//        file.write(data);
+//        file.close();
 
-        emit done(soubor);
+        emit done(soubor, data);
     }
 }
 
