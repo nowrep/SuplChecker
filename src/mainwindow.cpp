@@ -28,7 +28,7 @@ SuplChecker::SuplChecker(QWidget *parent) :
     QMainWindow(parent)
     ,DATADIR(
 #ifdef Q_OS_SYMBIAN
-        "e://data/suplchecker/"
+        "e:/data/suplchecker/"
 #else
         qApp->applicationDirPath()+"/data/"
 #endif
@@ -58,7 +58,21 @@ SuplChecker::SuplChecker(QWidget *parent) :
     menuBar()->addAction("O programu", this, SLOT(info_o_programu()));
     menuBar()->addAction("Konec", this, SLOT(close()));
 
-    zacni_loadovat("rosca0o0", "33bty23v", "http://g8mb.cz/bakaweb/");
+    QFile file(DATADIR+"account.txt");
+    file.open(QFile::ReadOnly);
+    QString fString = file.readAll();
+    QString name, password, server_ = "";
+    QStringList acc = fString.split(" ");
+    if (acc.count() != 3)
+        QMessageBox::critical(this, "Chyba", "Špatný formát account.txt formátu.\nSprávně: \"jmeno heslo server\" bez uvozovek.");
+    else {
+        name = acc.at(0);
+        password = acc.at(1);
+        server_ = acc.at(2).trimmed();
+    }
+    file.close();
+
+    zacni_loadovat(name, password, server_);
 #else
     QToolBar* toolbar = new QToolBar(this);
     toolbar->setContextMenuPolicy(Qt::CustomContextMenu);

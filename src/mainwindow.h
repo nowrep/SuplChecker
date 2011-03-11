@@ -24,7 +24,6 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QDebug>
-#include <QTextCodec>
 #include <QPushButton>
 #include <QtSql>
 #include <QToolBar>

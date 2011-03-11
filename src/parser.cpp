@@ -64,7 +64,7 @@ QString Parser::vrat_tyden(QString zdroj)
     QString od = rx.cap(1);
     rx.lastIndexIn(zdroj);
     QString dod = rx.cap(1);
-    return "<center><h1>"+od+" - "+dod+" 2010</center></h1>";
+    return "<center><h1>"+od+" - "+dod+" "+QDateTime::currentDateTime().toString("yyyy")+"</center></h1>";
 }
 
 bool Parser::zjisti_supl(QString zdroj)
