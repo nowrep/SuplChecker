@@ -16,23 +16,12 @@
 */
 #include "mainwindow.h"
 #include "parser.h"
-
-#ifdef Q_OS_SYMBIAN
-#include "ui_mainwindowS60.h"
-#else
 #include "ui_mainwindow.h"
 #include "nastaveni.h"
-#endif
 
 SuplChecker::SuplChecker(QWidget *parent) :
     QMainWindow(parent)
-    ,DATADIR(
-#ifdef Q_OS_SYMBIAN
-        "e:/data/suplchecker/"
-#else
-        qApp->applicationDirPath()+"/data/"
-#endif
-)
+    ,DATADIR(qApp->applicationDirPath()+"/data/")
     ,ui(new Ui::SuplChecker)
     ,aktShown(false)
     ,isLoading(false)
@@ -42,38 +31,7 @@ SuplChecker::SuplChecker(QWidget *parent) :
     qApp->installTranslator(&translator);
 
     ui->setupUi(this);
-#ifdef Q_OS_SYMBIAN
-    Qt::WindowFlags flags = windowFlags();
-    flags |= Qt::WindowSoftkeysVisibleHint;
-    flags &= ~Qt::WindowSoftkeysRespondHint;
-    setWindowFlags(flags);
-    showFullScreen();
 
-    QMenu* menuShow = new QMenu("Zobrazit...");
-    menuShow->addAction("Zobrazit tento týden", this, SLOT(showPageOnSymbian()))->setData(SuplChecker::CurrentWeek);
-    menuShow->addAction("Zobrazit příští týden", this, SLOT(showPageOnSymbian()))->setData(SuplChecker::NextWeek);
-    menuShow->addAction("Zobrazit stálý rozvrh", this, SLOT(showPageOnSymbian()))->setData(SuplChecker::Permanent);
-    menuShow->addAction("Zobrazit hodnocení", this, SLOT(showPageOnSymbian()))->setData(SuplChecker::Marks);
-    menuBar()->addMenu(menuShow);
-    menuBar()->addAction("O programu", this, SLOT(info_o_programu()));
-    menuBar()->addAction("Konec", this, SLOT(close()));
-
-    QFile file(DATADIR+"account.txt");
-    file.open(QFile::ReadOnly);
-    QString fString = file.readAll();
-    QString name, password, server_ = "";
-    QStringList acc = fString.split(" ");
-    if (acc.count() != 3)
-        QMessageBox::critical(this, "Chyba", "Špatný formát account.txt formátu.\nSprávně: \"jmeno heslo server\" bez uvozovek.");
-    else {
-        name = acc.at(0);
-        password = acc.at(1);
-        server_ = acc.at(2).trimmed();
-    }
-    file.close();
-
-    zacni_loadovat(name, password, server_);
-#else
     QToolBar* toolbar = new QToolBar(this);
     toolbar->setContextMenuPolicy(Qt::CustomContextMenu);
     toolbar->addAction(QIcon(":/icons/reload.png"), "Obnovit", this, SLOT(opakovat()))->setShortcut(QKeySequence("F5"));
@@ -126,7 +84,6 @@ SuplChecker::SuplChecker(QWidget *parent) :
      } else {
         zacni_loadovat(jmeno,heslo,server);
     }
-#endif
 
     aktualizujUzivatele();
     vycentruj();
@@ -139,11 +96,9 @@ void SuplChecker::setLoading(bool set)
 
 void SuplChecker::vycentruj()
 {
-#ifndef Q_OS_SYMBIAN
     const QRect screen=QApplication::desktop()->screenGeometry();
     const QRect &size=QWidget::geometry();
     QWidget::move( (screen.width()-size.width())/2, (screen.height()-size.height())/2 );
-#endif
 }
 
 void SuplChecker::zacni_loadovat(QString uzjmeno, QString uzheslo, QString server)
@@ -151,7 +106,6 @@ void SuplChecker::zacni_loadovat(QString uzjmeno, QString uzheslo, QString serve
     if (isLoading)
         return;
 
-#ifndef Q_OS_SYMBIAN
     QSqlQuery query;
     QDateTime now = QDateTime::currentDateTime();
     query.prepare("UPDATE users SET naposledy=? WHERE jmeno=?");
@@ -160,7 +114,6 @@ void SuplChecker::zacni_loadovat(QString uzjmeno, QString uzheslo, QString serve
     query.exec();
 
     actUser->setText("Načítám ...");
-#endif
     spatneUdaje=0;
 
     ui->webView_1->setUrl(QUrl::fromLocalFile(DATADIR+"loading.html"));
@@ -168,11 +121,6 @@ void SuplChecker::zacni_loadovat(QString uzjmeno, QString uzheslo, QString serve
     ui->webView_3->setUrl(QUrl::fromLocalFile(DATADIR+"loading.html"));
     ui->webView_4->setUrl(QUrl::fromLocalFile(DATADIR+"loading.html"));
 
-    //in new thread -> start();
-//#ifndef QT_NO_DEBUG
-//    qDebug() << "PAUSED FOR TESTING";
-//    return;
-//#endif
     aktJmeno=uzjmeno;
     Parser *vlakno = new Parser(uzjmeno,uzheslo,server);
     connect(vlakno, SIGNAL(jmeno(QString,QString)),this, SLOT(jmeno(QString,QString)),Qt::QueuedConnection);
@@ -188,12 +136,8 @@ void SuplChecker::zacni_loadovat(QString uzjmeno, QString uzheslo, QString serve
 void SuplChecker::info_o_programu()
 {
     QMessageBox msgBox(this);
-#ifdef Q_OS_SYMBIAN
-    msgBox.setText("SuplChecker 0.5<small><br/>Checker suplů a známek<br/>Autor: nowrep<br/>(C) 2010-2011 nowrep<br/><a href='http://suplchecker.wz.cz'>http://suplchecker.wz.cz</a></small>");
-#else
     msgBox.setText("<h1>SuplChecker 0.5</h1>Jednoduchý checker suplů a známek<br/><br/><b>Autor:</b> nowrep<br/><b>Poděkování:</b> Rajnymu a Patrickovi<br/>"
                    "<br/><small>Build time: 06/02/2011 14:44<br/>Copyright (C) 2010-2011 nowrep<br/><a href='http://suplchecker.wz.cz'>http://suplchecker.wz.cz</a>");
-#endif
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowIcon(QIcon(":icon.png"));
     msgBox.setIconPixmap(QPixmap(":icon.png"));
@@ -202,10 +146,8 @@ void SuplChecker::info_o_programu()
 
 void SuplChecker::udaje()
 {
-#ifndef Q_OS_SYMBIAN
     nastaveni window(this,this);
     window.exec();
-#endif
 }
 
 void SuplChecker::nacti(QString info, QByteArray data)
@@ -237,17 +179,12 @@ void SuplChecker::go()
 
 void SuplChecker::jmeno(QString jmeno, QString trida)
 {
-#ifndef Q_OS_SYMBIAN
     if (jmeno!=""){
         actUser->setText(jmeno+" ("+trida+")");
     }else{
         spatneUdaje=1;
         actUser->setText("Nesprávné údaje!");
     }
-#else
-    Q_UNUSED(jmeno)
-    Q_UNUSED(trida)
-#endif
 }
 
 void SuplChecker::aktualizace(QString stara, QString nova, QString changelog)
@@ -281,19 +218,16 @@ void SuplChecker::opakovat()
 
 void SuplChecker::aktualizujUzivatele()
 {
-#ifndef Q_OS_SYMBIAN
     actMenu->clear();
     QSqlQuery query;
     query.exec("SELECT jmeno FROM users ORDER BY naposledy");
     while(query.next()){
         actMenu->addAction("Načíst uživatele "+query.value(0).toString(), this, SLOT(loadAction()))->setData(query.value(0).toString());
     }
-#endif
 }
 
 void SuplChecker::vybrano(QString text)
 {
-#ifndef Q_OS_SYMBIAN
     QSqlQuery query;
     query.exec("SELECT jmeno, heslo, server FROM users WHERE jmeno='"+text+"'");
     query.next();
@@ -302,37 +236,12 @@ void SuplChecker::vybrano(QString text)
     QString server = query.value(2).toString();
 
     zacni_loadovat(jmeno,heslo,server);
-#else
-    Q_UNUSED(text)
-#endif
 }
 
 void SuplChecker::loadAction()
 {
     if (QAction *action = qobject_cast<QAction*>(sender()))
         vybrano(action->data().toString());
-}
-
-void SuplChecker::showPageOnSymbian()
-{
-#ifdef Q_OS_SYMBIAN
-    if (QAction *action = qobject_cast<QAction*>(sender())) {
-        switch (action->data().toInt()) {
-        case SuplChecker::CurrentWeek:
-            ui->stackedWidget->setCurrentIndex(0);
-            break;
-        case SuplChecker::NextWeek:
-            ui->stackedWidget->setCurrentIndex(1);
-            break;
-        case SuplChecker::Permanent:
-            ui->stackedWidget->setCurrentIndex(2);
-            break;
-        case SuplChecker::Marks:
-            ui->stackedWidget->setCurrentIndex(3);
-            break;
-        }
-    }
-#endif
 }
 
 SuplChecker::~SuplChecker()

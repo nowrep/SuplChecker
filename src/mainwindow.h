@@ -25,9 +25,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QPushButton>
-#ifndef Q_OS_SYMBIAN
 #include <QtSql>
-#endif
 #include <QToolBar>
 #include <QMenu>
 #include <QToolButton>
@@ -80,7 +78,5 @@ private slots:
     void loadAction();
     void opakovat();
     void vybrano(QString text);
-
-    void showPageOnSymbian();
 };
 #endif // MAINWINDOW_H
