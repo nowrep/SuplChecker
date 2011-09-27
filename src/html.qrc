@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>html/bg-blue.png</file>
+        <file>html/bg-green.png</file>
+        <file>html/bg-purple.png</file>
+        <file>html/bg-red.png</file>
+        <file>html/loading.html</file>
+        <file>html/styl.css</file>
+        <file>html/result.html</file>
+        <file>html/extrastyl.css</file>
+        <file>html/progress.txt</file>
+    </qresource>
+</RCC>

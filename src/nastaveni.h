@@ -20,36 +20,41 @@
 
 #include <QDialog>
 #include <QMessageBox>
-#include <QFile>
 #include <QDebug>
 #include <QTreeWidgetItem>
-#include <QSqlQuery>
+#include "globalsettings.h"
 
 namespace Ui {
     class nastaveni;
 }
 
 class SuplChecker;
-class nastaveni : public QDialog
+class SettingsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit nastaveni(SuplChecker* mainWindow,QWidget *parent = 0);
-    ~nastaveni();
+    explicit SettingsDialog(SuplChecker* mainWindow, QWidget* parent = 0);
+    ~SettingsDialog();
 
-private:
-    Ui::nastaveni *ui;
-    SuplChecker* mainwindow;
-    QString aktJmeno;
+signals:
+    void userModified(GlobalSettings::User before, GlobalSettings::User after);
 
 private slots:
-    void zapis_udaje();
-    void aktualizuj_tabulku();
-    void pridat_uziv();
-    void zobraz_kliknuty(QTreeWidgetItem *item, int column);
-    void smazat_uziv();
-    void nacti();
+    void showServerSettings();
+    void addUser();
+    void deleteUser();
+    void userChanged(QTreeWidgetItem* item, int column);
+    void itemSelectionChanged();
+
+    void saveSettings();
+
+private:
+    Ui::nastaveni* ui;
+    SuplChecker* m_mainWindow;
+    GlobalSettings::User m_selectedUser;
+
+
 };
 
 #endif // NASTAVENI_H

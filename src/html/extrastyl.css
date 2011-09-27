@@ -1,0 +1,1607 @@
+body 
+{
+ color:black;
+}
+
+#stranka 
+{ 
+background: #FFFFFF; 
+}
+
+#hlavicka 
+{ 
+background-color: #BF9960; 
+} 
+
+#paticka_matrjoska 
+{ 
+} 
+
+#paticka 
+{ 
+} 
+
+
+.hlavickaleva {
+background: url('logo.gif');
+background-repeat:no-repeat;
+
+}
+
+
+/* Styly pro login */
+
+.loginnadpis {
+color:black;
+}
+
+.logintable {
+background-color:#FFB742;
+border-color:#888888;
+}
+
+
+
+.lberr {
+background-color:#FF8080;
+}
+
+
+.ckod 
+{
+ background-color:#77FF77;
+}
+
+
+/********************************************/
+/*********** MASTER ************************/
+
+.MenuTop {
+background: url('menu.jpg'); 
+background-repeat: repeat-x;
+}
+
+.MenuTopText {
+
+}
+
+.MenuTopHovered {
+color:#FFFFFF; 
+}
+
+.MenuItem {
+background-color:#FFB742;  
+border-left-width:2px;
+border-left-style:solid;
+border-left-color:#BF9960;
+border-right-width:0px;
+border-right-style:solid;
+border-right-color:#BF9960;
+}
+
+.MenuItemTextHovered {
+background-color:#FFB742; 
+color:white;
+}
+
+.MenuItemText {
+background-color:#FFB742; 
+}
+
+.globlogjmeno {
+background-color:#FFB742;
+}
+
+.globlogjmeno a {
+color:Black;
+}
+
+
+.globlogjmeno a:hover {
+color:white;
+}
+
+
+.globmenu {
+background:url('menu.jpg'); 
+background-repeat: repeat-x;
+}
+
+
+
+/* styly pro prubeznou klasifikaci */
+
+.dodatable {
+border-color:#e9dc4b;
+background-color:#FFFFFF;
+}
+
+.nazevpr{
+padding:0px;
+font-weight:bold;
+}
+.nazevpr:link {
+color:#4D2600;
+}
+
+.nazevpr:visited {
+color:#4D2600;
+}
+
+.nazevpr:active {
+color:#4D2600;
+}
+
+.nazevpr:hover {
+color:#4D2600;
+}
+
+.znonline {
+color:#0000FF;
+}
+
+.znbodyonline {
+color:#0000FF;
+}
+
+.detprumer {
+color:#006600;
+padding:5px;
+padding-top:0px;
+}
+
+
+.onlyprumer {
+color:#006600;
+}
+
+.onlypoznamka {
+color:black;
+}
+
+.detctvrtletni {
+color:#000000;
+}
+
+.ctvrtletnidiv {
+background-color:#FFFFFF;
+}
+
+.nazevprdetail {
+ color:#4D2600;
+}
+
+.detznonline 
+{
+ background-color :#FFFFFF;
+ color:#AAAAAA;
+}
+
+
+.detznbody
+{
+ background-color :#FFFFFF;
+ color:#000000;
+}
+
+.detznbodyonline
+{
+ background-color :#FFFFFF;
+ color:#AAAAAA;
+}
+
+.detzn {
+color:#000000;
+background-color:#FFFFFF;
+}
+
+
+.radekznamky {
+background-color:#ffefbe;
+margin-top:-17px;
+padding:15px;
+padding-top:-5px;
+}
+
+/* styly pro pololetni klasifikaci */
+
+
+.polonadpis1 {
+color:#000077;
+}
+
+.polonadpis2 {
+color:#111111;
+}
+
+.polonadpis2opak {
+color:silver;
+}
+
+.polonadpis3 {
+color:#111111;
+}
+
+.polonadpis3opak {
+color:silver;
+}
+
+
+.polonadpis4 {
+color:#008B8B;
+}
+
+
+.polonadpis5 {
+color:#000077;
+}
+
+
+.poloznamka {
+color:#000000;
+background-color:#FFFFFF;
+}
+
+.poloznamkaopak {
+color:silver;
+background-color:#FFD700;
+}
+
+.poloznamka2 {
+color:black;
+}
+
+.poloznamka2opak {
+color:silver;
+}
+
+.polonazev {
+color:#444444;
+}
+
+/* styly pro vychovna opatreni */
+
+.vychpolo {
+color:#8B4513;
+}
+
+.vychdruh {
+color:#0000FF;
+}
+
+.vychdatum {
+color:#000000;
+}
+
+
+/* styly pro rozvrh  */
+
+
+.rozbunka {
+background-color:#FFFFF0;
+border-color:gray;
+}
+
+.roznumhod {
+background-color:#FFFFFF;
+}
+
+.rozpopishod {
+background-color:#FFFFFF;
+}
+
+.rozden {
+background-color:#FFFFFF;
+}
+
+.rozpredmet1 {
+border-left-color:gray;
+border-top-color:gray;
+
+}
+
+
+.rozpredmet1div a 
+{
+color:#8B5A2B;
+}
+
+
+.rozpredmet1div a:link 
+{
+color:#8B5A2B;
+}
+
+
+.rozpredmet1div a:visited
+{
+color:#8B5A2B;
+}
+
+
+
+.rozpredmet1zm {
+border-left-color:gray;
+border-top-color:gray;
+background-color:#FFC1C1;
+}
+
+.rozpredmetprazdny {
+background-color:#F5F5F5;
+border-left-color:gray;
+border-top-color:gray;
+}
+
+.rozucitel1 {
+color:#FF0000;
+border-left-color:gray;
+}
+
+.rozucitel1zm {
+color:#FF0000;
+border-left-color:gray;
+background-color:#FFC1C1;
+}
+
+.rozskupina1 {
+border-left-color:gray;
+}
+
+.rozskupina1zm {
+border-left-color:gray;
+background-color:#FFC1C1;
+}
+
+.rozmistnost1zm {
+background-color:#FFC1C1;
+}
+
+
+.rozmistnost1only {
+border-left-color:gray;
+}
+
+.rozmistnost1onlyzm {
+border-left-color:gray;
+background-color:#FFC1C1;
+}
+
+.rozpredmet1abs {
+border-left-color:gray;
+border-top-color:gray;
+background-color:#ADD8E6;
+}
+
+.rozucitel1abs {
+color:#FF0000;
+border-left-color:gray;
+background-color:#ADD8E6;
+}
+
+.rozskupina1abs {
+border-left-color:gray;
+background-color:#ADD8E6;
+}
+
+.rozmistnost1abs {
+background-color:#ADD8E6;
+}
+
+.rozmistnost1onlyabs {
+border-left-color:gray;
+background-color:#ADD8E6;
+}
+
+.rozpredmet2 {
+background-color:#FFFFF0;
+border-top-color:gray;
+}
+
+.rozpredmet2prvni {
+background-color:#FFFFF0;
+}
+
+.rozucitel2 {
+background-color:#FFFFF0;
+color:#FF0000;
+}
+
+.rozskupina2 {
+background-color:#FFFFF0;
+}
+
+.rozmistnost2 {
+background-color:#FFFFF0;
+}
+
+.rozmistnost2only {
+background-color:#FFFFF0;
+}
+
+.rozbunka2 {
+background-color:#FFFFF0;
+border-color:gray;
+}
+
+.rozseznampred {
+background-color:#FFFFFF;
+}
+
+.rozseznamucit {
+background-color:#FFFFFF;
+}
+
+.rozseznamhlava {
+ background:url('content.jpg');
+ background-repeat:repeat-x;
+ border-color:#e9dc4b;
+}
+
+
+
+/* styly pro absenci */
+
+.omltab {
+border-color:#777777;
+}
+
+.omltabmes {
+border-color:black;
+}
+
+.omltabf {
+border-color:black;
+}
+
+.omltab1 {
+background-color:#F5F5F5;
+}
+
+
+.omltab2 {
+background-color:#F5F5F5;
+}
+
+.omltab3 {
+background-color:#F5F5F5;
+}
+
+.omltabc {
+background-color:#FAEBD7;
+}
+
+.omlnic {
+background-color:#F5F5F5;
+}
+
+.omlabsence {
+background-color:#F5F5F5;
+}
+
+.omloml {
+background-color:#F5F5F5;
+}
+
+
+.omlpozde {
+background-color:#F5F5F5;
+}
+
+.omlsoon {
+background-color:#F5F5F5;
+}
+
+.omlprezent {
+background-color:#F5F5F5;
+}
+
+.omlneoml {
+background-color:#F5F5F5;
+}
+
+.omlco {
+background-color:#F5F5F5;
+}
+
+
+.omlsezhead {
+background-color:#FFFFF0;
+}
+
+.omlseztab {
+border-color:gray;
+}
+
+.omlsezbody {
+background-color:#F5F5F5;
+}
+
+.omlsezpatka {
+background-color:#FFFFF0;
+}
+
+
+.zamtable {
+border-color:#BF9960;
+}
+
+.zamhlava {
+color:#000000;
+ background-image:url("content.jpg");
+ background-repeat:repeat-x;
+background-color:#BF9960;
+border-bottom-color:#BF9960;
+}
+
+
+/* styly pro osobni udaje */
+
+
+.udaje {
+color:black;
+}
+
+.pudaje {
+color:black;
+}
+
+
+
+.udajez {
+color:black;
+background-color:#F08080;
+}
+
+.poznosob {
+border-top-color: black;
+}
+
+
+/* styly pro uvod */
+
+.iaktdate {
+  border-top-color: #e9dc4b;
+  border-left-color: #e9dc4b;
+  border-right-color: #e9dc4b;
+  background-color:#FFFFFF;
+}
+
+.iaktual {
+  border-bottom-color: #e9dc4b;
+  border-left-color: #e9dc4b;
+  border-right-color: #e9dc4b;
+  background-color:#FFFFFF;
+}
+
+.iaktuald {
+  border-bottom-color: #e9dc4b;
+  border-left-color: #e9dc4b;
+  border-right-color: #e9dc4b;
+  border-top-color: #e9dc4b;
+  background-color:#FFFFFF;
+}
+
+
+.uvodinfo {
+ border-color: #888888;
+ background-color:#ffefbe;
+}
+
+.uvodinfot td {
+ color:#111111;
+}
+
+.uvodrow {
+color:#0A0A0A;
+}
+
+tr.uvodalarm {
+color:#FF0000;
+}
+
+
+tr.uvodalarm a {
+color:#FF0002;
+}
+
+
+.utridni {
+color:#444444;
+}
+
+
+/* styly pro plan akci */
+
+
+.pltable 
+{
+  border-color:#e9dc4b;
+}
+
+
+.plhlava {
+background-color:#e9dc4b;
+ background-image:url("content.jpg");
+ background-repeat:repeat-x;
+}
+
+.plradek 
+{
+ background-color:#FFFAF0;
+}
+
+
+.plradek2 
+{
+ border-color: black;
+}
+
+
+.plden2
+{
+ color:#838B8B;
+}
+
+
+.uplantab {
+}
+
+
+.flyplan {
+background-color:#FFB742;
+border: solid 1px #AAAAAA;
+}
+
+
+
+/* styly pro ankety - odpovedi */
+
+
+.panelanket {
+background-color:#FFEFD6;
+border-color:black;
+}
+
+
+.tableank2 {
+background-color:#FAEBD7;
+border-color: black;
+}
+
+
+/* styly pro ankety - tvorba */
+
+
+.aghead {
+color:#000000;
+background-color:#BF9960;
+}
+
+.agnazev {
+color:black;
+background-color:#FFFFFF;
+}
+
+.agitem {
+color:black;
+background-color:#FFFFFF;
+}
+
+
+
+.aeditp {
+color:black;
+background-color:#ffffff;
+border-top-color: #BF9960;
+border-bottom-color: #BF9960;
+border-left-color: #BF9960;
+border-right-color: #BF9960;
+}
+
+
+
+.anazev {
+color:black;
+background-color:#FFB742;
+border-top-color: #BF9960;
+border-bottom-color: #BF9960;
+border-left-color: #BF9960;
+border-right-color: #BF9960;
+}
+
+.asledujp {
+color:black;
+background-color:#ffffff;
+border-top-color: #BF9960;
+border-bottom-color: #BF9960;
+border-left-color: #BF9960;
+border-right-color: #BF9960;
+}
+
+
+
+.lidinadpisgrid {
+ background-color:#BF9960;
+ }
+ 
+.lidigrid {
+
+}
+
+.lgrid {
+border: solid 1px #FFB742;
+}
+
+.lpgrid {
+ background-color:#FFB742;
+}
+
+
+.sledcelk {
+color:black;
+}
+
+
+.shlavicka {
+color:black;
+background-color:#FFD700;
+}
+
+.stelo {
+color:black;
+background-color:#FFFAFA;
+}
+
+
+.stelopr {
+color:black;
+}
+
+.stelopr2 {
+color:#880000;
+}
+
+
+.sgrid {
+border-color: black;
+}
+
+.tableank3 {
+background-color:#FAEBD7;
+border-color: black;
+}
+
+
+/**************************/
+/****** nasstyl.css *******/
+/**************************/
+
+.tablenast {
+background-color:#FAEBD7;
+}
+
+
+.kchyba 
+{
+    color:#FF0808;
+}
+
+
+.labelnasten {
+color:black;
+}
+
+
+
+.nastrepeat {
+background-color:#FAEBD7;
+color:black;
+}
+
+
+.repestyl2 {
+border-color:black;
+}
+
+
+.repelabel {
+background-color:#FFD700;
+}
+
+.repelabelhod {
+background-color:#EEC900;
+}
+
+
+.repelabelx {
+background-color:#DDDDDD;
+}
+
+.repelabels {
+background-color:#FF4040;
+}
+
+.repelabelr {
+background-color:#90EE90;
+}
+
+.repelabelroml {
+background-color:#7CCD7C;
+}
+
+.repelabelz {
+background-color:#87CEEB;
+}
+
+.repelabelzoml {
+background-color:#87CEEB;
+}
+
+.repelabelo {
+background-color:#FFD700;
+}
+
+.repelabelhodo {
+background-color:#EEC900;
+}
+
+
+.repelabelxo {
+background-color:#DDDDDD;
+}
+
+.repelabelso {
+background-color:#FF4040;
+}
+
+.repelabelro {
+background-color:#90EE90;
+}
+
+.repelabelromlo {
+background-color:#7CCD7C;
+}
+
+.repelabelzo {
+background-color:#87CEEB;
+}
+
+
+.repelabelzomlo {
+background-color:#87CEEB;
+}
+
+.repetext 
+{
+ background-color:#FFFFF3;
+}
+
+    
+.repetelo {
+background-color:white;
+}
+
+
+.repepatka {
+background-color:silver;
+}
+
+.repepotv {
+color:red;
+}
+
+
+
+.repenasnad {
+background-color: Yellow;
+}
+
+
+.divprehled 
+{
+    background-color:White;
+}
+
+
+.divprehled2 
+{
+  background-color:White;
+}
+
+.divprehled3 
+{
+ background-color:White;
+}
+
+.divnove
+{
+ background-color:White;
+}
+
+
+
+
+.dpnadpis 
+{
+}
+
+.dpnadpis2
+{
+}
+
+
+.dpsumy
+{
+    color:black;
+}
+
+.dpsumyalert
+{
+    color:red;
+}
+
+.dpsumyalert:visited
+{
+    color:Red;
+}
+
+.dpsumyalert:active
+{
+    color:Red;
+}
+
+.dpsumyalert:link
+{
+    color:Red;
+}
+
+.dpsumyalert:hover
+{
+    color:Red;
+}
+
+.lomlerr
+{
+  color:red;
+}
+
+
+
+.dpsumy2
+{
+    color:black;
+}
+
+.dplsumy 
+{
+    color:Black;
+}
+
+.dplsumyalert
+{
+    color:red;
+}
+
+
+.dplsumyalert:link
+{
+    color:red;
+}
+
+.dplsumyalert:hover
+{
+    color:red;
+}
+
+.dplsumyalert:active
+{
+    color:red;
+}
+
+.dplsumyalert:visited
+{
+    color:red;
+}
+
+.dptelo 
+{
+    color:black;
+    background-color:White;
+}
+   
+
+.dptelo2
+{
+    color:black;
+    background-color:White;
+}
+
+
+.dptelo2a
+{
+    color:black;
+    background-color:#B0B0B0;
+}
+
+
+.rclen
+{
+    color:black;
+    background-color:#FEFEFE;
+}
+
+.rclenn
+{
+    color:black;
+    background-color:#FEFE11;
+}
+
+
+
+.paneledit
+{
+    background-color:#FFDEAD;
+    border-color: #000000;
+}
+    
+    
+    
+.tlacitko3 {
+color:black;
+border-color: black;
+}
+
+
+a {
+color:black;
+}
+
+a:link {
+color:black;
+}
+
+a:visited {
+color:black;
+}
+
+a:hover {
+color:black;
+}
+
+a:active {
+color:black;
+}
+
+.ddlink 
+{
+    color:Red;
+}
+
+.ddlink:link
+{
+    color:Red;
+}
+
+
+.detfiletab {
+border-color:#AAAAAA;
+background-color:White;
+
+}
+
+
+/****************************************/
+/**************  bakagrid.css ***********/
+/***************************************/
+
+.wgtotal
+{
+    border-top-color: #BF9960;  
+    border-bottom-color: #BF9960;  
+}
+
+
+.wgContextMenu
+{
+	background: #ffffff;
+    border-color: #BF9960;
+}
+
+.wgItemDisabled
+{
+	background-color: #ffffff;
+}
+.wgItemChecked .wgItemOut
+{
+	background-color: #ffffff;
+}
+.wgItemOver 
+{
+	background-color: #cccccc;
+}
+
+.wgSplitter
+{
+	background: red;
+}
+
+.wgloading
+{
+	background-color:#CF8A44;
+	color: #ffffff;
+}
+
+
+span.wgtool:hover span.wgtip {
+  border-color: #336;
+  background-color: #f7f7ee;
+  color: #238DCC;
+}
+
+.wgtotalcell
+{
+    border-top-color: #FDCA89;  
+    border-bottom-color: #FDCA89;  
+}
+
+.wgimage 
+{
+    border-color: #C0C0C0;
+}
+
+.wgsystemmessagebox 
+{
+	color:red;
+    border-color: #C1D9F0;
+	background-color: #FAFAFA;
+}
+
+.wgsystemmessagetitle
+{
+	color:red;
+}
+
+
+.wgnewrecord ,.wgupdaterecords, .wgupdaterecord, .wgclosewindow, .wgerrorreport
+{
+	color:#CD6123
+}
+
+
+.wgmainedit
+{
+    border-left-color: #F8EDE2;
+    border-right-color: #F8EDE2;
+    border-bottom-color: #F8EDE2;
+	background-color: #FAFAFA;
+}
+
+.wgtitle	
+{
+	color: #496250;	
+    background-color:#BF9960;
+}
+
+.wgtoolbargrid, .wgtoolbaredit	
+{
+	color: #666666;
+	background-color: #FFF1DB;
+}
+
+.wgsearchfield 
+{
+	color: Black;
+}
+
+
+.wgheadercolumn
+{
+    background:url("content.jpg");
+    background-repeat:repeat-x;
+	background-color: #BF9960;
+	color: #444444;
+}
+
+
+.wgeditfield 
+{
+	color:black;
+    border-color: #A84900; 
+}
+
+.wgmaingrid
+{
+    border-left-color: #BF9960;
+    border-right-color: #BF9960;
+    border-top-color: #BF9960;
+    border-bottom-color: #BF9960;
+	background-color: #FAFAFA;
+}
+
+a.wgnewrecord, a.wgsearch, a.wgupdaterecord,a.wgupdaterecords, a.wgclosewindow, a.wgerrorreport
+{
+	color: Black;
+}
+
+a.wgnewrecord:hover, a.wgsearch:hover, a.wgupdaterecord:hover, a.wgupdaterecords:hover , a.wgclosewindow:hover, a.wgerrorreport:hover
+{
+	color: Black;
+}
+
+
+a.wglinkfield
+{
+	color: Black;
+}
+
+a.wgheadercolumn {
+	color : Black;
+}
+
+
+a.wgpagerunselected:link, a.wgpagerunselected:visited,
+a.wgpagerall:link, a.wgpagerall:visited
+{
+	color: Black;
+}
+
+
+.wginactivemenu 
+{
+color: White;
+}
+
+/* This class is used to render background color for WebGrid menu 
+	choice that are active. */
+.wgactivemenu 
+{
+color: Black;
+}
+
+.wgtextbutton, .wgclosewindow, .wgerrorreport, .wgnewrecord, .wgupdaterecord,.wgupdaterecords, .wgsearch,
+.wgPagerFirstTemplate, .wgPagerPreviousTemplate, .wgPagerNextTemplate, 
+.wgPagerLastTemplate, .wgpagerall, .wgpagerselected, .wgpagerunselected
+
+{
+	border-color: #DFB47C;
+	border-top-color: #cccccc;
+	border-left-color: #cccccc;
+	background-color: #F2D7B5;
+}
+
+.wgtextbutton:link, .wgclosewindow:link, .wgerrorreport:link, .wgnewrecord:link, .wgupdaterecord:link, .wgupdaterecords:link,.wgsearch:link,
+.wgPagerFirstTemplate:link, .wgPagerPreviousTemplate:link, .wgPagerNextTemplate:link, 
+.wgPagerLastTemplate:link, .wgpagerall:link, .wgpagerselected:link, .wgpagerunselected:link
+{
+	background-color: #F6E3CB;
+}
+
+.wgtextbutton:visited, .wgclosewindow:visited, .wgerrorreport:visited, .wgnewrecord:visited, .wgupdaterecord:visited,.wgupdaterecords:visited, .wgsearch:visited,
+.wgPagerFirstTemplate:visited, .wgPagerPreviousTemplate:visited, .wgPagerNextTemplate:visited, 
+.wgPagerLastTemplate:visited, .wgpagerall:visited, .wgpagerselected:visited, .wgpagerunselected:visited
+{
+	background-color: #F6E3CB;
+}
+
+
+.wgtextbutton:hover, .wgclosewindow:hover, .wgerrorreport:hover, .wgnewrecord:hover, .wgupdaterecord:hover,.wgupdaterecords:hover, .wgsearch:hover,
+.wgPagerFirstTemplate:hover, .wgPagerPreviousTemplate:hover, .wgPagerNextTemplate:hover, 
+.wgPagerLastTemplate:hover, .wgpagerall:hover, .wgpagerselected:hover, .wgpagerunselected:hover
+{
+	background-color: #D7A15B;
+}
+
+.wgmenulinkinactive {
+	color:#EFEFEF;
+ }
+ 
+.wgmenulinkinactive:hover {
+	color:#EFEFEF;
+ }
+ 
+.wgmenulinkactive{ 	
+	color: Black;
+}
+
+.wgmenulinkactive:hover { 	
+	color: Black;
+}
+
+
+.wgshadowcontainer .wgshadow1 
+{
+		background: #F0D2AD;
+}
+
+.wgshadowcontainer .wgshadow2 
+{
+		background: #E4AE6C;
+}
+
+.wgshadowcontainer .wgshadow3 
+{
+		background: #C67D24;
+}
+
+.wgshadowcontainer .wgcontainer 
+{
+		background: #ffffff;
+}
+
+	.webgrid_window .webgrid_window_top{
+		background-color: #707070;
+	}
+
+
+	.webgrid_windowMiddle{
+        border-left-color: #707070;
+		
+	}
+	.webgrid_windowContent{
+        border-right-color: #707070;
+		background-color:#FFF;
+	}
+
+
+	.webgrid_window_bottom{
+        border-left-color: #707070;
+        border-right-color: #707070;
+        border-bottom-color: #707070;
+		background-color:#FFFFFF;
+	}
+
+
+.wgucitel {
+background-color:#EDEDED;
+}
+
+
+.wgrodic {
+background-color:#FAFAFA;
+}
+
+
+.tabplat {
+border-color:#e9dc4b;
+background-color:#FFFFFF;
+}
+
+.nadpisplat {
+	background-color: #e9dc4b;
+	color: #333333;
+}
+
+.nadpis2plat {
+	background-color: #e9dc4b;
+	color: #333333;
+}
+
+
+/* upload */
+.FileUploadProgress_MainDiv      { 
+border-color:#000000;
+background-color:#F0F0F8;
+}
+
+.FileUploadProgress_Current      { 
+color:#00CC66; 
+}
+.FileUploadProgress_Bar  {
+background-color:#F0F0F8;
+}
+
+.FileUploadProgress_UploadedListFileName {
+ color :#009999;
+}
+
+.FileUploadProgress_UploadedListFileText   {
+color:#0000FF;
+}
+
+
+/* kalendar */
+
+.kalenspecial {
+	color:#AA0000;
+    background-color:#FFD700;
+}
+
+.kalenmain {
+ background: url('content.jpg');
+ background-repeat:repeat-x;
+  background-color:#ffefbe;
+ 
+}
+
+
+/* dialog */
+
+.defaultHeaderMiddleCenter
+{
+    background-color:#BF9960;
+}
+
+
+/* zapis znamek */
+
+.panelzahlavi {
+background-color:#FFDEAD;
+border-color:#111111;
+}
+
+
+
+
+/***************************/
+/***************************/
+/***************************/
+/* styly pro update 12.12.2008  */
+
+.planinfo {
+background-color:#FFB742;
+border-color:#BF9960;
+}
+
+.pinadpis {
+background-color:#FFB742;
+}
+
+
+.tdakce
+{
+ border-bottom-color:#D5BB95;
+}
+
+.tdakce2
+{
+ border-bottom-color:#D5BB95;
+}
+
+
+/***************************/
+/***************************/
+/***************************/
+/* styly pro update 20.1.2009  */
+
+.znnovejsi {
+color:#FF1010;
+}
+
+
+.znbodynovejsi {
+color:#FF1010;
+}
+
+
+/**************************/
+/******     09/10     *****/
+/**************************/
+
+.cm {
+background: url('content.jpg');
+}
+
+.cmplan {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+.cmprub {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+.cmpolo {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+
+.cmvych {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+
+.cmopr {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+
+.cmosob {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+.cmrozvrh {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+.cmsuplov {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+
+.cmoml {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+.cmzames {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+
+.cmnasten {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+
+.cmplugin {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+.cmlog {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+.cmlog2,.cmlogpoc {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+.cmlogerr {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+
+.cmkomens {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+
+.cmmojelog {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+
+.cmzapisp {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+.cmknih,.cmsestav {
+ background-color : #FFB742;
+ border-bottom:solid 1px #e7df85;
+}
+
+.urtable {
+background-color:#ffefbe;
+
+}
+
+.urtable td {
+background-color:#ffefbe;
+}
+
+.urprihlas {
+background-color:#ffefbe;
+}
+
+.ustable {
+background-color:#ffefbe;
+}
+
+
+
+

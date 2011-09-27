@@ -16,10 +16,44 @@
 */
 #include <QtGui/QApplication>
 #include <QTextCodec>
-#include "mainwindow.h"
+#include "suplchecker.h"
+#include "debuglogger.h"
+
+void messageOutput(QtMsgType type, const char *msg)
+{
+    QString originalMsg = QString::fromUtf8(msg);
+    QString outputLine;
+
+    switch (type) {
+    case QtDebugMsg:
+            outputLine = originalMsg;
+        break;
+
+    case QtWarningMsg:
+        outputLine = "WARNING: " + originalMsg;
+        break;
+
+    case QtFatalMsg:
+        outputLine = "FATAL: " + originalMsg;
+        abort();
+        break;
+
+    case QtCriticalMsg:
+        outputLine = "CRITICAL: " + originalMsg;
+        break;
+    }
+
+    if (outputLine.isEmpty())
+        return;
+
+    outputLine.prepend("[" + QTime::currentTime().toString("hh:mm:ss:zzz") +"] ");
+    DebugLogger::recordLog(outputLine);
+}
 
 int main(int argc, char *argv[])
 {
+    qInstallMsgHandler(messageOutput);
+
     QApplication a(argc, argv);
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
     SuplChecker w;

@@ -14,8 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef NEWTHREAD_H
-#define NEWTHREAD_H
+#ifndef PARSER_H
+#define PARSER_H
 
 #include <QThread>
 #include <QtNetwork/QtNetwork>
@@ -24,33 +24,58 @@ class Parser : public QThread
 {
     Q_OBJECT
 public:
-    Parser(QString jmeno, QString heslo, QString server);
+    Parser(QString jmeno, QString heslo, bool checkUpdates);
+    ~Parser();
+
+    void setBackgroundData(const QByteArray &data) { m_bgData = data; }
+
+    enum Error { NoServersAvailable, BadLogins };
+    enum Operation { GET, POST };
+    struct Student {
+        QString jmeno;
+        QString trida;
+    };
+
 protected:
    void run();
 
 signals:
-   void jmeno(const QString &jmeno, const QString &trida);
+   void studentName(Parser::Student s);
    void aktualizace(const QString &nova, const QString &stara, const QString &changelog);
-   void chyba(const QString &text);
-   void zobraz_udaje();
+   void error(Parser::Error er);
    void done(const QString &results, const QByteArray &data);
    void loading(bool state);
+   void deleteNow();
 
 private:
-   QString uzJmeno;
-   QString uzHeslo;
-   QString uzServer;
+   QByteArray pripravHtml(bool includeBasicStyl = false);
+
+   QString vrat_den(int den, const QString &zdroj);
+   QString vrat_tyden(const QString &zdroj);
+   Student vrat_jmeno(const QString &zdroj);
+   bool zjisti_supl(const QString &zdroj);
+   QString checkni_tyden(const QString &zdroj);
+
+   void parsuj_dalsi(const QString &zdroj, const QString &soubor);
+   void parsuj_tyden(const QString &zdroj, const QString &soubor);
+
+   QString send_request(const QUrl &url, Operation method = GET, QByteArray postData = "");
+   QString getInput(const QString &zdroj, const QString &input);
+   bool isServerOnline(const QString &server);
+
+   QNetworkAccessManager* m_manager;
+   QString m_userName;
+   QString m_userPassword;
+   QString m_activeServer;
+   QByteArray m_bgData;
+   bool m_checkUpdates;
+
+   QString _send_request(QNetworkAccessManager *manager, QString url, int method = 1, QByteArray postData = "");
+
 private slots:
-    QString vrat_den(int den, QString zdroj);
-    QString vrat_tyden(QString zdroj);
-    void vrat_jmeno(QString zdroj);
-    bool zjisti_supl(QString zdroj);
-    QString checkni_tyden(QString zdroj);
-    QString send_request(QNetworkAccessManager *manager, QString url, int method=1, QByteArray postData="");
-    void parsuj_dalsi(QString zdroj,QString soubor);
-    void parsuj_tyden(QString zdroj,QString soubor);
-    QString getInput(QString zdroj, QString input);
-    void pracuj();
+   void work();
+   void startWork();
+
 };
 
-#endif // NEWTHREAD_H
+#endif // PARSER_H

@@ -14,8 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef SUPLCHECKER_H
+#define SUPLCHECKER_H
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -25,58 +25,71 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QPushButton>
-#include <QtSql>
 #include <QToolBar>
-#include <QMenu>
 #include <QToolButton>
 #include <QWebFrame>
 #include <QMenuBar>
 #include <QFlags>
 #include <QMenu>
 #include <QTranslator>
+#include <QPointer>
+#include <QFrame>
+#include <QCloseEvent>
+
+#include "globalsettings.h"
+#include "parser.h"
 
 namespace Ui {
     class SuplChecker;
 }
 
+class Loader;
+class AboutDialog;
+class Parser;
 class SuplChecker : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    void go();
     explicit SuplChecker(QWidget *parent = 0);
     ~SuplChecker();
 
-    const QString DATADIR;
-
-    void aktualizujUzivatele();
+    //Public Functions
+    static void centerOnScreen(QWidget* w);
 
 public slots:
-    void zacni_loadovat(QString uzjmeno, QString uzheslo, QString server);
-
-private:
-    Ui::SuplChecker *ui;
-    int spatneUdaje;
-    int aktShown;
-    QString aktJmeno;
-    QToolButton* actUser;
-    QMenu* actMenu;
-    bool isLoading;
-
-    enum StackedPages { CurrentWeek, NextWeek, Permanent, Marks };
+    void startLoading(GlobalSettings::User user);
 
 private slots:
+    void aboutToShowUsersMenu();
     void setLoading(bool set);
-    void vycentruj();
-    void info_o_programu();
-    void chyba(QString text);
-    void udaje();
+    void aboutProgram();
+    void chyba(Parser::Error er);
+    void showSettingsDialog();
     void aktualizace(QString stara, QString nova, QString changelog);
-    void jmeno(QString jmeno, QString trida);
+    void jmeno(const Parser::Student &s);
     void nacti(QString info, QByteArray data);
     void loadAction();
-    void opakovat();
+    void reloadWithSameUser();
     void vybrano(QString text);
+    void deleteThread();
+
+    void userModified(const GlobalSettings::User &before, const GlobalSettings::User &after);
+
+private:
+    void closeEvent(QCloseEvent *e);
+
+    Ui::SuplChecker* ui;
+    Loader* m_loader;
+    QToolButton* m_usersButton;
+    QMenu* m_usersMenu;
+    QPointer<AboutDialog> m_aboutDialog;
+    QPointer<Parser> m_threadParser;
+    QPointer<QFrame> m_errorFrame;
+
+    bool m_updateShown;
+    bool m_isLoading;
+
+    GlobalSettings::User m_activeUser;
 };
-#endif // MAINWINDOW_H
+#endif // SUPLCHECKER_H

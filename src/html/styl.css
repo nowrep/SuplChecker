@@ -1,0 +1,617 @@
+body {
+background: url(data:image/png;base64,%BG-IMG%);
+background-position:right bottom;
+background-attachment:fixed;
+}
+
+.rozbunka {
+font-size:10px;
+width:650px;
+table-layout:fixed;
+border-collapse:collapse;
+border-width:1px;
+border-style:solid;
+}
+
+.rozbunka td {
+ text-align :center;
+ vertical-align:middle;
+}
+
+.roznumhod {
+font-size:10px;
+font-weight:bold;
+}
+
+.rozpopishod {
+font-size:8px;
+font-weight:normal;
+margin:0px;
+padding:0px;
+}
+
+.rozden {
+font-size:10px;
+font-weight:bold;
+height:65px;
+}
+
+.rozpredmet1 {
+font-size:14px;
+font-weight:bold;
+border-left-style:solid;
+border-left-width:1px;
+border-top-style:solid;
+border-top-width:1px;
+margin:0px;
+padding:0px;
+vertical-align:middle;
+height:100%;
+background-color:fffff0;
+
+}
+
+.rozpredmet1div {
+vertical-align:middle;
+height:100%;
+width:100%;
+text-align:center;
+}
+
+
+.rozpredmet1div a 
+{
+ text-decoration:none;
+}
+
+.rozpredmet1div a:hover {
+ text-decoration :underline;
+}
+
+.rozpredmet1div a:visited {
+ text-decoration :none;
+}
+
+.rozpredmet1div a:link {
+ text-decoration :none;
+}
+
+
+
+.rozpredmet1zm {
+font-size:14px;
+font-weight:bold;
+border-left-style:solid;
+border-left-width:1px;
+border-top-style:solid;
+border-top-width:1px;
+margin:0px;
+padding:0px;
+vertical-align:middle;
+background-color:ffc1c1;
+}
+
+.rozpredmet1zmdiv {
+vertical-align:middle;
+background-color:ffc1c1;
+}
+
+
+.rozpredmetprazdny {
+font-size:14px;
+font-weight:bold;
+border-left-style:solid;
+border-left-width:1px;
+border-top-style:solid;
+border-top-width:1px;
+margin:0px;
+padding:0px;
+vertical-align:middle;
+background-color:f5f5f5;
+}
+
+.rozucitel1 {
+color:red;
+font-size:12px;
+font-style:italic;
+font-weight:bold;
+border-left-style:solid;
+border-left-width:1px;
+background-color:fffff0;
+}
+
+.rozucitel1zm {
+font-size:12px;
+font-style:italic;
+font-weight:bold;
+border-left-style:solid;
+border-left-width:1px;
+background-color:ffc1c1;
+}
+
+.rozskupina1 {
+font-size:9px;
+font-weight:normal;
+border-left-style:solid;
+border-left-width:1px;
+background-color:fffff0;
+}
+
+.rozskupina1zm {
+font-size:9px;
+font-weight:normal;
+border-left-style:solid;
+border-left-width:1px;
+background-color:ffc1c1;
+}
+
+
+.rozmistnost1 {
+font-size:9px;
+font-weight:normal;
+font-style:italic;
+background-color:fffff0;
+}
+
+
+.rozmistnost1zm {
+font-size:9px;
+font-weight:normal;
+font-style:italic;
+background-color:ffc1c1;
+}
+
+
+.rozmistnost1only {
+border-left-style:solid;
+border-left-width:1px;
+font-size:9px;
+font-weight:normal;
+font-style:italic;
+}
+
+.rozmistnost1onlyzm {
+border-left-style:solid;
+border-left-width:1px;
+font-size:9px;
+font-weight:normal;
+font-style:italic;
+}
+
+
+.rozpredmet1abs {
+font-size:14px;
+font-weight:bold;
+border-left-style:solid;
+border-left-width:1px;
+border-top-style:solid;
+border-top-width:1px;
+margin:0px;
+padding:0px;
+background-color:add8e6;
+}
+
+.rozucitel1abs {
+font-size:12px;
+font-style:italic;
+font-weight:bold;
+border-left-style:solid;
+border-left-width:1px;
+background-color:add8e6;
+}
+
+.rozskupina1abs {
+font-size:9px;
+font-weight:normal;
+border-left-style:solid;
+border-left-width:1px;
+background-color:add8e6;
+}
+
+.rozmistnost1abs {
+font-size:9px;
+font-weight:normal;
+font-style:italic;
+background-color:add8e6;
+
+.dodatable {
+border-style:solid;
+border-width:1px;
+}
+
+.dodanadpis {
+font-size:10px;
+font-weight:bold;
+}
+
+.doda {
+font-size:10px;
+font-weight:bold;
+}
+
+.dodapopis {
+font-size:10px;
+text-align:left;
+}
+
+
+.radekznamky {
+
+}
+
+.radekznamky td {
+padding:2px;
+text-align:center;
+vertical-align:top;
+}
+
+.nazevprdiv {
+white-space:nowrap;
+text-align:left;
+}
+
+
+.nazevprcell {
+width:140px;
+}
+
+
+.nazevprcell2 {
+width:40px;
+text-align:left;
+}
+
+
+.nazevpr {
+
+font-size:11pt;
+font-weight:bold;
+}
+
+.typ {
+font-size:7pt;
+}
+
+.typ td {
+text-align:center;
+}
+
+.datum {
+font-size:7pt;
+font-style:italic;
+}
+
+.datum td {
+text-align:center;
+}
+
+.znamka {
+font-size:11pt;
+font-weight:bold;
+margin:50px;
+}
+
+.znonline {
+font-size:10pt;
+font-weight:bold;
+text-align:center;
+}
+
+.znbody {
+font-size:8pt;
+font-weight:bold;
+text-align:center;
+}
+
+
+.znmaxbody {
+font-weight:normal;
+font-size:7pt;
+}
+
+
+.znbodyonline {
+font-size:8pt;
+font-weight:bold;
+text-align:center;
+}
+
+.detprumer {
+font-size:13px;
+font-weight:bold;
+}
+
+.detprumerdiv {
+margin-right:10px;
+margin-left:10px;
+}
+
+.onlyprumer {
+font-size:13px;
+font-weight:bold;
+}
+
+.onlypoznamka {
+font-size:10px;
+font-weight:normal;
+margin-left:15px;
+padding-left:15px;
+}
+
+
+
+.ctvrtletni {
+font-weight:bold;
+font-size:16px;
+vertical-align:top;
+}
+
+.detctvrtletni {
+font-weight:bold;
+font-size:14px;
+vertical-align:top;
+}
+
+.ctvrtletnidiv {
+margin-left:10px;
+margin-right:10px;
+}
+
+
+.nazevprdetail {
+ font-size:11pt;
+ font-weight:bold;
+ margin-bottom:10px;
+}
+
+
+.detznonline 
+{
+ font-size:13px;
+ font-weight:bold;
+}
+
+
+.detznbody
+{
+ font-size:13px;
+ font-weight:bold;
+}
+
+.detznbodyonline
+{
+ font-size:13px;
+ font-weight:bold;
+}
+
+.dettyp {
+font-size:11px;
+ white-space:nowrap;
+}
+
+.detvaha {
+font-size:11px;
+ white-space:nowrap;
+}
+
+.dettypp {
+font-size:11px;
+ white-space:nowrap;
+}
+
+.detdatum {
+font-size:11px;
+font-weight:bold;
+}
+
+.detpozn {
+font-size:9px;
+text-align:left;
+}
+
+.detcaption {
+font-size:10px;
+font-weight:bold;
+text-align:left;
+}
+
+.detznamka {
+font-size:13px;
+font-weight:bold;
+}
+
+.detzn {
+text-align:left;
+padding:2px;
+}
+
+.detznamkadiv {
+
+}
+
+
+.detpredm {
+font-size:12px;
+font-weight:bold;
+margin-right:10px;
+ white-space:nowrap;
+}
+
+.dettable {
+
+}
+
+}
+
+.rozmistnost1onlyabs {
+border-left-style:solid;
+border-left-width:1px;
+font-size:9px;
+font-weight:normal;
+font-style:italic;
+}
+
+.rozpredmet2 {
+font-size:11px;
+font-weight:bold;
+border-top-style:solid;
+border-top-width:1px;
+margin:0px;
+padding:0px;
+}
+
+.rozpredmet2prvni {
+font-size:11px;
+font-weight:bold;
+margin:0px;
+padding:0px;
+}
+
+.rozucitel2 {
+font-size:8px;
+font-style:italic;
+font-weight:bold;
+}
+
+.rozskupina2 {
+font-size:8px;
+font-weight:normal;
+}
+
+.rozmistnost2 {
+font-size:8px;
+font-weight:normal;
+font-style:italic;
+}
+
+.rozmistnost2only {
+font-size:8px;
+font-weight:normal;
+font-style:italic;
+}
+
+.rozbunka2 {
+font-size:8px;
+border-collapse:collapse;
+border-width:1px;
+padding:0;
+margin:0;
+height:65px;
+vertical-align:middle;
+}
+
+.rozseznampred {
+font-size:13px;
+font-weight:normal;
+padding-left:10px;
+padding-right:10px;
+}
+
+.rozseznampred td {
+padding:3px;
+text-align:left;
+}
+
+.rozseznamucit {
+font-size:13px;
+font-weight:normal;
+padding-left:10px;
+padding-right:10px;
+}
+
+.rozseznamhlava {
+font-size:11px;
+font-weight:bold;
+border-width:1px;
+border-style:solid;
+
+}
+
+.rozseznamhlava td {
+padding:4px;
+text-align:left;
+}
+
+.dodatable {
+border-color:#e9dc4b;
+background-color:#FFFFFF;
+}
+
+.nazevpr:link {
+color:#4D2600;
+}
+
+.nazevpr:visited {
+color:#4D2600;
+}
+
+.nazevpr:active {
+color:#4D2600;
+}
+
+.nazevpr:hover {
+color:#4D2600;
+}
+
+.znonline {
+color:#0000FF;
+}
+
+.znbodyonline {
+color:#0000FF;
+}
+
+.detprumer {
+color:#006600;
+}
+
+
+.onlyprumer {
+color:#006600;
+}
+
+.onlypoznamka {
+color:black;
+}
+
+.detctvrtletni {
+color:#000000;
+}
+
+.ctvrtletnidiv {
+background-color:#FFFFFF;
+}
+
+.nazevprdetail {
+ color:#4D2600;
+}
+
+.detznonline 
+{
+ background-color :#FFFFFF;
+ color:#AAAAAA;
+}
+
+
+.detznbody
+{
+ background-color :#FFFFFF;
+ color:#000000;
+}
+
+.detznbodyonline
+{
+ background-color :#FFFFFF;
+ color:#AAAAAA;
+}
+
+.detzn {
+color:#000000;
+background-color:#FFFFFF;
+}
+
+
+.radekznamky {
+background-color:#ffefbe;
+}
+

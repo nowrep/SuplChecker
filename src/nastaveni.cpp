@@ -17,157 +17,180 @@
 #include "nastaveni.h"
 #include "ui_nastaveni.h"
 #include "mainwindow.h"
+#include "globalsettings.h"
+#include "serversdialog.h"
 
-nastaveni::nastaveni(SuplChecker* mainWindow,QWidget *parent) :
+QString colorToFile(const QString &color)
+{
+    if (color == "Modrá")
+        return "bg-blue.png";
+    if (color == "Zelená")
+        return "bg-green.png";
+    if (color == "Fialová")
+        return "bg-purple.png";
+    if (color == "Červená")
+        return "bg-red.png";
+
+    return "bg-blue.png";
+}
+
+QString fileToColor(const QString &file)
+{
+    if (file == "bg-blue.png")
+        return "Modrá";
+    if (file == "bg-green.png")
+        return "Zelená";
+    if (file == "bg-purple.png")
+        return "Fialová";
+    if (file == "bg-red.png")
+        return "Červená";
+
+    return "Modrá";
+}
+
+SettingsDialog::SettingsDialog(SuplChecker* mainWindow, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::nastaveni)
+  , m_mainWindow(mainWindow)
 {
     ui->setupUi(this);
+    ui->zobrazDnyBezSuplovani->setChecked( GlobalSettings::ShowDaysWithoutSubs );
+    ui->kontrolovatAktualizace->setChecked( GlobalSettings::CheckUpdates );
 
-    QString jmeno=""; //uzivatelske jmeno
-    QString heslo=""; //uzivatelske heslo
-    QString server=""; //server na ktery se chceme prihlasit
+    ui->startUzivatel->addItem( GlobalSettings::StartupUser.name );
+    foreach (GlobalSettings::User usr, GlobalSettings::AllUsers) {
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->uzivatele);
+        item->setText(0, usr.name);
+        item->setText(1, usr.password);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        ui->uzivatele->addTopLevelItem(item);
 
-    mainwindow=mainWindow;
-
-    QSqlQuery query;
-    query.exec("SELECT jmeno, heslo, server FROM users ORDER BY naposledy DESC");
-    query.next();
-    jmeno=query.value(0).toString();
-    heslo=query.value(1).toString();
-    server=query.value(2).toString();
-
-    aktJmeno=jmeno;
-
-    ui->jmeno->setText(jmeno);
-    ui->heslo->setText(heslo);
-
-    if (server=="http://g8mb.cz/bakaweb/"){
-        ui->server->setCurrentIndex(0);
-    }else if (server=="http://gserver/bakaweb/"){
-        ui->server->setCurrentIndex(1);
-    }else{
-        ui->server->setCurrentIndex(0);
+        if (usr == GlobalSettings::StartupUser)
+            continue;
+        ui->startUzivatel->addItem(usr.name);
     }
-    aktualizuj_tabulku();
 
-    connect(ui->buttonBox2, SIGNAL(rejected()), this, SLOT(close()));
-    connect(ui->buttonBox2, SIGNAL(accepted()), this, SLOT(nacti()));
-    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(zapis_udaje()));
+    for (int i = 0; i < ui->barvaPozadi->count(); i++) {
+        if (colorToFile(ui->barvaPozadi->itemText(i)) == GlobalSettings::BackgroundPixmapName) {
+            ui->barvaPozadi->setCurrentIndex(i);
+            break;
+        }
+    }
 
-    connect(ui->treeWidget, SIGNAL(itemClicked (QTreeWidgetItem *, int)), this, SLOT(zobraz_kliknuty(QTreeWidgetItem *,int)));
-    connect(ui->butNovy, SIGNAL(clicked()), this, SLOT(pridat_uziv()));
-    connect(ui->butSmazat, SIGNAL(clicked()), this, SLOT(smazat_uziv()));
+    connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(close()));
+    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(saveSettings()));
+    connect(ui->servery, SIGNAL(clicked()), this, SLOT(showServerSettings()));
+
+    connect(ui->uzivatele, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(userChanged(QTreeWidgetItem*,int)));
+    connect(ui->uzivatele, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelectionChanged()));
+    connect(ui->butNovy, SIGNAL(clicked()), this, SLOT(addUser()));
+    connect(ui->butSmazat, SIGNAL(clicked()), this, SLOT(deleteUser()));
+
+    ui->uzivatele->setFocus();
+    ui->uzivatele->itemAt(0,0)->setSelected(true);
+
+    QTimer::singleShot(0, this, SLOT(itemSelectionChanged()));
 }
 
-void nastaveni::zapis_udaje()
+void SettingsDialog::addUser()
 {
-    QString jmeno=ui->jmeno->text();
-    QString heslo=ui->heslo->text();
-    QString server=ui->server->currentText();
-
-    if (jmeno=="" || heslo=="" || server==""){
-        QMessageBox msgBox;
-        msgBox.setText("Nevyplnil jsi jméno a heslo!");
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setWindowIcon(QIcon(":icon.png"));
-        msgBox.exec();
-    }else{
-    QSqlQuery query;
-    query.prepare("UPDATE users SET jmeno=?, heslo=?, server=? WHERE jmeno=?");
-    query.bindValue(0,jmeno);
-    query.bindValue(1,heslo);
-    query.bindValue(2,server);
-    query.bindValue(3,aktJmeno);
-    query.exec();
-    aktJmeno=jmeno;
-    ui->info->setText("Uživatel "+jmeno+" uložen.");
-    aktualizuj_tabulku();
-    if (jmeno.length()!=8 || heslo.length()!=8){
-        ui->info->setText("Jméno a heslo by mělo mít 8 znaků (podle původních loginů)!");
-    }
+    foreach (GlobalSettings::User usr, GlobalSettings::AllUsers) {
+        if (usr.name == "Nový")
+            return;
     }
 
-    mainwindow->aktualizujUzivatele();
+    QTreeWidgetItem* item = new QTreeWidgetItem(ui->uzivatele);
+    item->setText(0, "Nový");
+    item->setFlags(item->flags() | Qt::ItemIsEditable);
+    ui->uzivatele->addTopLevelItem(item);
+
+    GlobalSettings::User user;
+    user.name = "Nový";
+    user.password = "";
+    user.realName = "";
+    GlobalSettings::AllUsers.append(user);
+    ui->startUzivatel->addItem("Nový");
 }
 
-void nastaveni::aktualizuj_tabulku()
+void SettingsDialog::deleteUser()
 {
-    int i=0;
-    ui->treeWidget->clear();
-    QSqlQuery query;
-    query.exec("SELECT jmeno, heslo, server FROM users ORDER by naposledy");
-    while (query.next()){
-        QTreeWidgetItem *item=new QTreeWidgetItem(ui->treeWidget);
-        item->setText(0,query.value(0).toString());
-        item->setText(1,query.value(1).toString());
-        item->setText(2,query.value(2).toString());
-        ui->treeWidget->addTopLevelItem(item);
-        i++;
-    }
-    if (i==0){
-        pridat_uziv();
-        ui->jmeno->setText("Nový");
-        ui->heslo->setText("-");
-        aktJmeno="Nový";
-    }
-}
-
-void nastaveni::pridat_uziv()
-{
-    QSqlQuery query;
-    query.exec("SELECT id FROM users WHERE jmeno='Nový'");
-
-    if (!query.next()){
-    query.exec("INSERT INTO users (jmeno,heslo,server) VALUES('Nový','-','')");
-    aktualizuj_tabulku();
-    ui->info->setText("Nový uživatel přidán.");
-    }else{
-    ui->info->setText("Nejdříve upravte nového uživatele!");
-    }
-}
-
-void nastaveni::smazat_uziv()
-{
-    if (!ui->treeWidget->currentItem())
+    if (!ui->uzivatele->currentItem())
         return;
-    QString akt=ui->treeWidget->currentItem()->text(0);
-    QSqlQuery query;
-    query.exec("DELETE FROM users WHERE jmeno='"+akt+"'");
-    ui->info->setText("Uživatel "+akt+" byl smazán.");
-    ui->jmeno->clear();
-    ui->heslo->clear();
-    aktualizuj_tabulku();
 
-    mainwindow->aktualizujUzivatele();
-}
+    GlobalSettings::User usr;
+    usr.name = ui->uzivatele->currentItem()->text(0);
+    usr.password = ui->uzivatele->currentItem()->text(1);
 
-void nastaveni::zobraz_kliknuty(QTreeWidgetItem *item, int column)
-{
-    Q_UNUSED(column);
-    QSqlQuery query;
-    query.prepare("SELECT jmeno,heslo,server FROM users WHERE jmeno=?");
-    query.bindValue(0,item->text(0));
-    query.exec();
-    query.next();
-    ui->jmeno->setText(query.value(0).toString());
-    ui->heslo->setText(query.value(1).toString());
-    aktJmeno=ui->jmeno->text();
-}
-
-void nastaveni::nacti()
-{
-    zapis_udaje();
-    QString jmeno=ui->jmeno->text();
-    QString heslo=ui->heslo->text();
-    QString server=ui->server->currentText();
-    if (jmeno!=""){
-    mainwindow->zacni_loadovat(jmeno,heslo,server);
-    close();
+    if (GlobalSettings::AllUsers.contains(usr)) {
+        GlobalSettings::AllUsers.removeOne(usr);
+        delete ui->uzivatele->currentItem();
+        ui->startUzivatel->removeItem(ui->startUzivatel->findText(usr.name));
     }
 }
 
-nastaveni::~nastaveni()
+void SettingsDialog::itemSelectionChanged()
+{
+    if (!ui->uzivatele->currentItem())
+        return;
+
+    GlobalSettings::User usr;
+    usr.name = ui->uzivatele->currentItem()->text(0);
+    usr.password = ui->uzivatele->currentItem()->text(1);
+    usr.realName = "";
+    m_selectedUser = usr;
+}
+
+void SettingsDialog::userChanged(QTreeWidgetItem *item, int column)
+{
+    if (GlobalSettings::AllUsers.contains(m_selectedUser)) {
+        if (column == 0 && ui->uzivatele->findItems(item->text(0), Qt::MatchExactly).count() > 1) {
+            item->setText(0, m_selectedUser.name);
+        }
+        GlobalSettings::User usr;
+        usr.name = ui->uzivatele->currentItem()->text(0);
+        usr.password = ui->uzivatele->currentItem()->text(1);
+        usr.realName = "";
+
+        GlobalSettings::AllUsers.removeOne(m_selectedUser);
+        GlobalSettings::AllUsers.append(usr);
+
+        if (column == 0) {
+            int editedIndex = ui->startUzivatel->findText(m_selectedUser.name);
+            if (editedIndex != -1)
+                ui->startUzivatel->setItemText(editedIndex, usr.name);
+        }
+
+        emit userModified(m_selectedUser, usr);
+        m_selectedUser = usr;
+    }
+}
+
+void SettingsDialog::showServerSettings()
+{
+    ServersDialog d(this);
+    d.exec();
+}
+
+void SettingsDialog::saveSettings()
+{
+    GlobalSettings::ShowDaysWithoutSubs = ui->zobrazDnyBezSuplovani->isChecked();
+    GlobalSettings::CheckUpdates = ui->kontrolovatAktualizace->isChecked();
+    GlobalSettings::BackgroundPixmapName = colorToFile(ui->barvaPozadi->currentText());
+    GlobalSettings::BackgroundPixmapPath = ":html/" + GlobalSettings::BackgroundPixmapName;
+
+//    GlobalSettings::AvailableServers = ui->server->currentText();
+
+    foreach (GlobalSettings::User usr, GlobalSettings::AllUsers) {
+        if (usr.name == ui->startUzivatel->currentText()) {
+            GlobalSettings::StartupUser = usr;
+            break;
+        }
+    }
+
+    close();
+}
+
+SettingsDialog::~SettingsDialog()
 {
     delete ui;
 }
