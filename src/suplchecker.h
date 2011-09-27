@@ -54,8 +54,11 @@ public:
     explicit SuplChecker(QWidget *parent = 0);
     ~SuplChecker();
 
-    //Public Functions
-    static void centerOnScreen(QWidget* w);
+    static const QString VERSION;
+    static const QString BUILDTIME;
+    static const QString AUTHOR;
+    static const QString COPYRIGHT;
+    static const QString WWWADDRESS;
 
 public slots:
     void startLoading(GlobalSettings::User user);

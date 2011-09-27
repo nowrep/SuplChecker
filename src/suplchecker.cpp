@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "mainwindow.h"
+#include "suplchecker.h"
 #include "parser.h"
 #include "ui_mainwindow.h"
 #include "nastaveni.h"
@@ -25,12 +25,11 @@
 #include "ui_erroroverlay.h"
 #include "globalfunctions.h"
 
-void SuplChecker::centerOnScreen(QWidget* w)
-{
-    const QRect screen = QApplication::desktop()->screenGeometry();
-    const QRect &size = w->geometry();
-    w->move((screen.width()-size.width())/2, (screen.height()-size.height())/2);
-}
+const QString SuplChecker::VERSION = "0.8.0";
+const QString SuplChecker::BUILDTIME = __DATE__" "__TIME__;
+const QString SuplChecker::AUTHOR = "nowrep";
+const QString SuplChecker::COPYRIGHT = "2010-2011";
+const QString SuplChecker::WWWADDRESS = "http://suplchecker.wz.cz";
 
 SuplChecker::SuplChecker(QWidget *parent)
     : QMainWindow(parent)
@@ -96,7 +95,7 @@ SuplChecker::SuplChecker(QWidget *parent)
     else
         startLoading(startupUser);
 
-    centerOnScreen(this);
+    sc_centerWidgetOnScreen(this);
 
     connect(m_usersMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowUsersMenu()));
 }

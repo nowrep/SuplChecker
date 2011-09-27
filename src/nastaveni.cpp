@@ -16,7 +16,7 @@
 */
 #include "nastaveni.h"
 #include "ui_nastaveni.h"
-#include "mainwindow.h"
+#include "suplchecker.h"
 #include "globalsettings.h"
 #include "serversdialog.h"
 
