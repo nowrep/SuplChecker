@@ -3,3 +3,4 @@ SuplChecker.pro.user.1.3
 Makefile
 *.o
 ui_*
+*.ini
