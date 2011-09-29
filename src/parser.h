@@ -24,12 +24,10 @@ class Parser : public QThread
 {
     Q_OBJECT
 public:
-    Parser(QString jmeno, QString heslo, bool checkUpdates);
+    Parser(const QString &jmeno, const QString &heslo);
     ~Parser();
 
-    void setBackgroundData(const QByteArray &data) { m_bgData = data; }
-
-    enum Error { NoServersAvailable, BadLogins };
+    enum Error { NoServersAvailable, BadLogins, NoStartupUser };
     enum Operation { GET, POST };
     struct Student {
         QString jmeno;
@@ -41,7 +39,6 @@ protected:
 
 signals:
    void studentName(Parser::Student s);
-   void aktualizace(const QString &nova, const QString &stara, const QString &changelog);
    void error(Parser::Error er);
    void done(const QString &results, const QByteArray &data);
    void loading(bool state);
@@ -67,10 +64,6 @@ private:
    QString m_userName;
    QString m_userPassword;
    QString m_activeServer;
-   QByteArray m_bgData;
-   bool m_checkUpdates;
-
-   QString _send_request(QNetworkAccessManager *manager, QString url, int method = 1, QByteArray postData = "");
 
 private slots:
    void work();

@@ -52,10 +52,16 @@ public:
 
     static QString BackgroundPixmapPath;
     static QString BackgroundPixmapName;
+    static void setBackgroundPixmap(const QString &name);
 
     static bool ShowDaysWithoutSubs;
     static bool CheckUpdates;
 
+    static QByteArray backgroundPixmapData();
+
+private:
+    static bool m_reloadPixmap;
+    static QByteArray m_bgPixmapData;
 };
 
 #endif // GLOBALSETTINGS_H

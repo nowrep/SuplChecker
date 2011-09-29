@@ -17,15 +17,14 @@
 #include "parser.h"
 #include "globalsettings.h"
 #include "globalfunctions.h"
+#include "suplchecker.h"
 
-Parser::Parser(QString jmeno, QString heslo, bool checkUpdates)
+Parser::Parser(const QString &jmeno, const QString &heslo)
     : QThread()
     , m_manager(0)
     , m_userName(jmeno)
     , m_userPassword(heslo)
-    , m_checkUpdates (checkUpdates)
 {
-    moveToThread(this);
     qRegisterMetaType<Error>("Parser::Error");
     qRegisterMetaType<Student>("Parser::Student");
 }
@@ -130,7 +129,7 @@ QByteArray Parser::pripravHtml(bool includeExtraStyl)
     if (includeExtraStyl)
         style.append(sc_readAllFileContents(":html/extrastyl.css"));
 
-    style.replace("%BG-IMG%", m_bgData);
+    style.replace("%BG-IMG-NAME%", GlobalSettings::BackgroundPixmapName.toAscii());
     html.replace("%CSS-STYLE%", style);
 
     return html;
@@ -279,9 +278,9 @@ void Parser::startWork()
 
     emit loading(true);
     work();
-    emit loading(false);
 
     exit();
+    emit loading(false);
     emit deleteNow();
 
     qDebug() << "finishing thread id: " << currentThreadId();
@@ -389,17 +388,16 @@ void Parser::work()
     QString pololetni = send_request(m_activeServer + "prehled.aspx?s=4", POST, postData); // pololetni znamky jsou doma
     parsuj_dalsi(pololetni, "pololetni.html");
 
-    if (GlobalSettings::CheckUpdates && m_checkUpdates) {
-        qDebug() << "checking for updates";
-        //Check for new version::
-        QString current_version = "0.7 (8.6.2011)";
-        QString actual_version = send_request(QUrl("http://suplchecker.wz.cz/version.php"));
+//    if (GlobalSettings::CheckUpdates && m_checkUpdates) {
+//        qDebug() << "checking for updates...";
+//        QString actual_version = send_request(QUrl("http://suplchecker.wz.cz/version.php"));
+//        qDebug() << "current version: " << SuplChecker::VERSION << " - actual version: " << actual_version;
 
-        if (!actual_version.contains(current_version) && actual_version.contains("Aktuální verze: ")) {
-            QString changelog = send_request(QUrl("http://suplchecker.wz.cz/changelog.php"));
-            emit aktualizace(current_version, actual_version.replace("Aktuální verze: ", ""), changelog);
-        }
-    }
+//        if (!actual_version.contains(SuplChecker::VERSION) && !actual_version.isEmpty()) {
+//            QString changelog = send_request(QUrl("http://suplchecker.wz.cz/changelog.php"));
+//            emit aktualizace(actual_version, changelog);
+//        }
+//    }
 }
 
 Parser::~Parser()

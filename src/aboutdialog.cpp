@@ -21,7 +21,7 @@
 #include "globalfunctions.h"
 
 AboutDialog::AboutDialog(QWidget *parent)
-    : QWidget(parent)
+    : QDialog(parent)
     , ui(new Ui::AboutDialog)
     , m_debugLogger(0)
 {
@@ -31,12 +31,22 @@ AboutDialog::AboutDialog(QWidget *parent)
     ui->setupUi(this);
     sc_centerWidgetOnScreen(this);
 
+    ui->textBrowser->setHtml(QString("<center><h2>SuplChecker</h2>"
+                             "<b>Verze:</b> %1 <br /><b>Datum:</b> %2 <br /><br />"
+                             "<b>Autor:</b><br/> %3<br /><b>Poděkování:</b><br/> Rajnymu a Patrickovi<br /><br />"
+                             "<small>Copyright (C) %4 %5</small><br />"
+                             "<a href='%6'>%6</center>"
+                             ).arg(SuplChecker::VERSION, SuplChecker::BUILDTIME, SuplChecker::AUTHOR, SuplChecker::COPYRIGHT, SuplChecker::AUTHOR, SuplChecker::WWWADDRESS)
+                             );
+
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(close()));
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(openLog()));
 }
 
 void AboutDialog::openLog()
 {
+    close();
+
     if (!m_debugLogger)
         m_debugLogger = new DebugLogger();
 

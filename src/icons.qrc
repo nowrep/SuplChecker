@@ -5,7 +5,6 @@
         <file>icons/reload.png</file>
         <file>icon.png</file>
         <file>icons/book.png</file>
-        <file>icons/loader.gif</file>
         <file>icons/terminal.png</file>
         <file>icons/semi-transp.png</file>
         <file>icons/delete.png</file>
@@ -13,5 +12,15 @@
         <file>icons/alert.png</file>
         <file>icons/down.png</file>
         <file>icons/up.png</file>
+        <file>icons/toolbar/button.png</file>
+        <file>icons/toolbar/button-hover.png</file>
+        <file>icons/toolbar/button-pressed.png</file>
+        <file>icons/transp.png</file>
+        <file>icons/exeicons/suplchecker16.png</file>
+        <file>icons/exeicons/suplchecker32.png</file>
+        <file>icons/exeicons/suplchecker64.png</file>
+        <file>icons/exeicons/suplchecker128.png</file>
+        <file>icons/exeicons/suplchecker256.png</file>
+        <file>icons/exeicons/suplchecker48.png</file>
     </qresource>
 </RCC>

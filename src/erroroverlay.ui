@@ -145,11 +145,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label">
-             <property name="pixmap">
-              <pixmap resource="icons.qrc">:/icons/alert.png</pixmap>
-             </property>
-            </widget>
+            <widget class="QLabel" name="icon"/>
            </item>
            <item>
             <spacer name="horizontalSpacer_8">
@@ -228,8 +224,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -19,11 +19,11 @@
 #include "ui_mainwindow.h"
 #include "nastaveni.h"
 #include "globalsettings.h"
-#include "loader.h"
 #include "qtwin.h"
 #include "aboutdialog.h"
 #include "ui_erroroverlay.h"
 #include "globalfunctions.h"
+#include "updatechecker.h"
 
 const QString SuplChecker::VERSION = "0.8.0";
 const QString SuplChecker::BUILDTIME = __DATE__" "__TIME__;
@@ -31,13 +31,24 @@ const QString SuplChecker::AUTHOR = "nowrep";
 const QString SuplChecker::COPYRIGHT = "2010-2011";
 const QString SuplChecker::WWWADDRESS = "http://suplchecker.wz.cz";
 
+QIcon SuplChecker::suplcheckerIcon()
+{
+    QIcon i;
+    i.addFile(":icons/exeicons/suplchecker16.png");
+    i.addFile(":icons/exeicons/suplchecker32.png");
+    i.addFile(":icons/exeicons/suplchecker48.png");
+    i.addFile(":icons/exeicons/suplchecker64.png");
+    i.addFile(":icons/exeicons/suplchecker128.png");
+    i.addFile(":icons/exeicons/suplchecker256.png");
+    return i;
+}
+
 SuplChecker::SuplChecker(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::SuplChecker)
     , m_aboutDialog(0)
     , m_threadParser(0)
     , m_errorFrame(0)
-    , m_updateShown(false)
     , m_isLoading(false)
 {
     GlobalSettings::loadSettings();
@@ -47,20 +58,23 @@ SuplChecker::SuplChecker(QWidget *parent)
     qApp->installTranslator(translator);
 
     ui->setupUi(this);
-    QApplication::setWindowIcon(QIcon(":icons/icon.png"));
+    QApplication::setWindowIcon(suplcheckerIcon());
 
     if (QtWin::isCompositionEnabled()) {
         setContentsMargins(0, 0, 0, 0);
         QtWin::extendFrameIntoClientArea(this);
-        setStyleSheet("QToolBar {border:none; background:transparent; }");
     }
+
+    setStyleSheet("QToolBar {border:none; background:transparent;}"
+                  "QToolButton { border-image: url(':/icons/toolbar/button.png'); border-width:3; min-width:22px; height: 19px;}"
+                  "QToolButton::hover {border-image: url(':/icons/toolbar/button-hover.png');}"
+                  "QToolButton::pressed {border-image: url(':/icons/toolbar/button-pressed.png');}"
+                  "QToolButton::menu-indicator { image: url(:/icons/transp.png);}");
 
     QToolBar* leftToolbar = new QToolBar(this);
     leftToolbar->setContextMenuPolicy(Qt::CustomContextMenu);
     QWidget* spa = new QWidget();
-    spa->setMinimumWidth(170);
-    m_loader = new Loader(leftToolbar);
-    leftToolbar->addWidget(m_loader);
+    spa->setMinimumWidth(190);
     leftToolbar->addWidget(spa);
     leftToolbar->addAction(QIcon(":/icons/reload.png"), "Obnovit", this, SLOT(reloadWithSameUser()))->setShortcut(QKeySequence("F5"));
     leftToolbar->addAction(QIcon(":/icons/book.png"), "Nastavení", this, SLOT(showSettingsDialog()))->setShortcut(QKeySequence("Ctrl+P"));
@@ -68,6 +82,7 @@ SuplChecker::SuplChecker(QWidget *parent)
 
     m_usersButton = new QToolButton(this);
     m_usersButton->setText("Nevybrán uživatel");
+    m_usersButton->setToolTip("Vyberte uživatele kterého chcete načíst");
     m_usersButton->setPopupMode(QToolButton::InstantPopup);
     m_usersMenu = new QMenu(this);
     m_usersButton->setMenu(m_usersMenu);
@@ -87,44 +102,52 @@ SuplChecker::SuplChecker(QWidget *parent)
     rightToolbar->setContextMenuPolicy(Qt::CustomContextMenu);
     addToolBar(rightToolbar);
 
-    //Starting loading first user
-    GlobalSettings::User startupUser = GlobalSettings::StartupUser;
-
-    if (startupUser.name == "jmeno" || startupUser.password == "heslo" || GlobalSettings::AvailableServers.isEmpty())
-        showSettingsDialog();
+    if (GlobalSettings::StartupUser.name == "jmeno")
+        QTimer::singleShot(0, this, SLOT(errorNoStartupUser()));
     else
-        startLoading(startupUser);
+        startLoading(GlobalSettings::StartupUser);
 
     sc_centerWidgetOnScreen(this);
 
     connect(m_usersMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowUsersMenu()));
+
+    if (GlobalSettings::CheckUpdates)
+        QTimer::singleShot(5000, this, SLOT(checkUpdates()));
+}
+
+void SuplChecker::errorNoStartupUser()
+{
+    chyba(Parser::NoStartupUser);
 }
 
 void SuplChecker::setLoading(bool set)
 {
     m_isLoading = set;
+}
 
-    if (set)
-        m_loader->startAnimation();
-    else
-        m_loader->stopAnimation();
+void SuplChecker::checkUpdates()
+{
+    UpdateChecker* c = new UpdateChecker;
+    connect(c, SIGNAL(updateAvailable(QString,QString)), this, SLOT(aktualizace(QString,QString)));
+    c->start();
 }
 
 void SuplChecker::startLoading(GlobalSettings::User user)
 {
-    if (m_isLoading || m_threadParser)
+    if (m_isLoading)
         return;
 
     if (m_errorFrame)
         delete m_errorFrame;
 
+    if (m_threadParser)
+        delete m_threadParser;
+
     m_usersButton->setText("Načítám ...");
     m_activeUser = user;
 
-    QByteArray bgData = sc_pixmapToByteArray(QPixmap(GlobalSettings::BackgroundPixmapPath));
     QByteArray html = sc_readAllFileContents(":html/loading.html");
-    html.replace("%BG-IMG%", bgData);
-    html.replace("%PROGRESS%", sc_readAllFileContents(":html/progress.txt"));
+    html.replace("%BG-IMG-NAME%", GlobalSettings::BackgroundPixmapName.toAscii());
 
     ui->webView_1->setContent(html);
     ui->webView_2->setContent(html);
@@ -132,22 +155,28 @@ void SuplChecker::startLoading(GlobalSettings::User user)
     ui->webView_4->setContent(html);
     ui->webView_5->setContent(html);
 
-    m_threadParser = new Parser(user.name, user.password, m_updateShown);
-    m_threadParser->setBackgroundData(bgData);
+    m_threadParser = new Parser(user.name, user.password);
 
-    connect(m_threadParser, SIGNAL(studentName(Parser::Student)), this, SLOT(jmeno(Parser::Student)), Qt::QueuedConnection);
-    connect(m_threadParser, SIGNAL(aktualizace(QString,QString,QString)), this, SLOT(aktualizace(QString,QString,QString)), Qt::QueuedConnection);
-    connect(m_threadParser, SIGNAL(done(QString,QByteArray)), this, SLOT(nacti(QString,QByteArray)), Qt::QueuedConnection);
-    connect(m_threadParser, SIGNAL(error(Parser::Error)), this, SLOT(chyba(Parser::Error)), Qt::QueuedConnection);
-    connect(m_threadParser, SIGNAL(loading(bool)), this, SLOT(setLoading(bool)), Qt::QueuedConnection);
-    connect(m_threadParser, SIGNAL(deleteNow()),this, SLOT(deleteThread()), Qt::QueuedConnection);
+    connect(m_threadParser, SIGNAL(studentName(Parser::Student)), this, SLOT(jmeno(Parser::Student)));
+    connect(m_threadParser, SIGNAL(done(QString,QByteArray)), this, SLOT(nacti(QString,QByteArray)));
+    connect(m_threadParser, SIGNAL(error(Parser::Error)), this, SLOT(chyba(Parser::Error)));
+    connect(m_threadParser, SIGNAL(loading(bool)), this, SLOT(setLoading(bool)));
+    connect(m_threadParser, SIGNAL(deleteNow()),this, SLOT(deleteThread()));
 
     m_threadParser->start();
 }
 
 void SuplChecker::deleteThread()
 {
-    delete m_threadParser;
+    if (!m_threadParser)
+        return;
+
+    if (m_threadParser->isFinished())
+        delete m_threadParser;
+    else {
+        qDebug() << "loading thread still running. trying to delete next second...";
+        QTimer::singleShot(3 * 1000, this, SLOT(deleteThread()));
+    }
 }
 
 void SuplChecker::aboutProgram()
@@ -156,14 +185,13 @@ void SuplChecker::aboutProgram()
         m_aboutDialog = new AboutDialog();
 
     m_aboutDialog->show();
-    m_aboutDialog->raise();
 }
 
 void SuplChecker::showSettingsDialog()
 {
-    SettingsDialog window(this,this);
-    connect(&window, SIGNAL(userModified(GlobalSettings::User,GlobalSettings::User)), this, SLOT(userModified(GlobalSettings::User,GlobalSettings::User)));
-    window.exec();
+    SettingsDialog* window = new SettingsDialog(this,this);
+    connect(window, SIGNAL(userModified(GlobalSettings::User,GlobalSettings::User)), this, SLOT(userModified(GlobalSettings::User,GlobalSettings::User)));
+    window->exec();
 }
 
 void SuplChecker::userModified(const GlobalSettings::User &before, const GlobalSettings::User &after)
@@ -205,32 +233,36 @@ void SuplChecker::jmeno(const Parser::Student &s)
     m_activeUser = usr;
 }
 
-void SuplChecker::aktualizace(QString stara, QString nova, QString changelog)
+void SuplChecker::aktualizace(QString nova, QString changelog)
 {
-    if (m_updateShown == 0){
-        m_updateShown = 1;
-        QMessageBox msgBox(this);
-        msgBox.setWindowTitle("Aktualizace!");
-        msgBox.setText("<h2>Je dostupná aktualizace programu!</h2><b>Vaše verze: </b>"+stara+"<br/><b>Nová verze: </b>"+nova+"<br/><br/>"+changelog+"<br/><br/>"
-                       "<small><a href='http://suplchecker.wz.cz/download.php'>Novou verzi stáhnete zde!</a></small>");
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setWindowIcon(QIcon(":icon.png"));
-        msgBox.exec();
-    }
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("Aktualizace!");
+    msgBox.setText("<h2>Je dostupná aktualizace programu!</h2><b>Vaše verze: </b>" + SuplChecker::VERSION + "<br/><b>Nová verze: </b>" + nova + "<br/><br/>" + changelog + "<br/><br/>"
+                   "<small><a href='http://suplchecker.wz.cz/'>Novou verzi stáhnete zde!</a></small>");
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setWindowIcon(QIcon(":icon.png"));
+    msgBox.exec();
 }
 
 void SuplChecker::chyba(Parser::Error er)
 {
     QString errorString;
+    QPixmap icon;
 
     switch (er) {
     case Parser::NoServersAvailable:
-        errorString = "Žádný z nastavených serverů není dostupný. Zkontrolujte Vaše internetové připojení.";
+        icon = QPixmap(":/icons/alert.png");
+        errorString = "Žádný z nastavených serverů není dostupný. Zkontrolujte Vaše internetové připojení O_o";
         break;
 
     case Parser::BadLogins:
-        errorString = "Zadané údaje jsou chybné.";
+        icon = QPixmap(":/icons/alert.png");
+        errorString = "Zadané údaje jsou chybné :-!";
         break;
+
+    case Parser::NoStartupUser:
+        icon = QPixmap(":/icon.png");
+        errorString = "Zadejte prosím Vaše údaje v Nastavení :-)";
 
     default:
         break;
@@ -252,6 +284,7 @@ void SuplChecker::chyba(Parser::Error er)
     Ui_ErrorOverlay* erUi = new Ui_ErrorOverlay();
     erUi->setupUi(m_errorFrame);
     erUi->message->setText(errorString);
+    erUi->icon->setPixmap(icon);
     m_errorFrame->resize(ui->tabWidget->size());
     m_errorFrame->show();
     connect(erUi->buttonBox, SIGNAL(clicked(QAbstractButton*)), erUi->mainFrame, SLOT(close()));
@@ -259,7 +292,10 @@ void SuplChecker::chyba(Parser::Error er)
 
 void SuplChecker::reloadWithSameUser()
 {
-    startLoading(m_activeUser);
+    if (GlobalSettings::AllUsers.contains(m_activeUser))
+        startLoading(m_activeUser);
+    else
+        startLoading(GlobalSettings::AllUsers.at(0));
 }
 
 void SuplChecker::aboutToShowUsersMenu()
@@ -271,7 +307,7 @@ void SuplChecker::aboutToShowUsersMenu()
         if (realName.isEmpty())
             realName = usr.name;
 
-        m_usersMenu->addAction(QIcon(":icon.png"), "Načí­st uživatele "+realName, this, SLOT(loadAction()))->setData(usr.name);
+        m_usersMenu->addAction(QIcon(":icon.png"), "Načí­st uživatele " + realName, this, SLOT(loadAction()))->setData(usr.name);
     }
 }
 

@@ -43,7 +43,6 @@ namespace Ui {
     class SuplChecker;
 }
 
-class Loader;
 class AboutDialog;
 class Parser;
 class SuplChecker : public QMainWindow
@@ -54,6 +53,7 @@ public:
     explicit SuplChecker(QWidget *parent = 0);
     ~SuplChecker();
 
+    static QIcon suplcheckerIcon();
     static const QString VERSION;
     static const QString BUILDTIME;
     static const QString AUTHOR;
@@ -64,12 +64,14 @@ public slots:
     void startLoading(GlobalSettings::User user);
 
 private slots:
+    void checkUpdates();
+    void errorNoStartupUser();
     void aboutToShowUsersMenu();
     void setLoading(bool set);
     void aboutProgram();
     void chyba(Parser::Error er);
     void showSettingsDialog();
-    void aktualizace(QString stara, QString nova, QString changelog);
+    void aktualizace(QString nova, QString changelog);
     void jmeno(const Parser::Student &s);
     void nacti(QString info, QByteArray data);
     void loadAction();
@@ -83,14 +85,12 @@ private:
     void closeEvent(QCloseEvent *e);
 
     Ui::SuplChecker* ui;
-    Loader* m_loader;
     QToolButton* m_usersButton;
     QMenu* m_usersMenu;
     QPointer<AboutDialog> m_aboutDialog;
     QPointer<Parser> m_threadParser;
     QPointer<QFrame> m_errorFrame;
 
-    bool m_updateShown;
     bool m_isLoading;
 
     GlobalSettings::User m_activeUser;

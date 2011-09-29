@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>683</width>
-    <height>402</height>
+    <width>680</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -32,6 +32,9 @@ background-position: center;
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0" colspan="3">
     <widget class="QLabel" name="label_2">
+     <property name="whatsThis">
+      <string>Jo jo, to je program O_O</string>
+     </property>
      <property name="text">
       <string>&lt;span style=&quot;font-size:20pt; font-weight:bold;&quot;&gt;SuplChecker&lt;/span&gt;</string>
      </property>
@@ -48,6 +51,9 @@ background-position: center;
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QCheckBox" name="zobrazDnyBezSuplovani">
+        <property name="whatsThis">
+         <string>Zaškrtnutím této možnosti se v suplování na tento a příští týden zobrazí všechny dny, bez ohledu na to, jestli se v nich objevuje nějaký supl.</string>
+        </property>
         <property name="text">
          <string>Zobrazovat i dny ve kterých není žádné
 suplování</string>
@@ -56,6 +62,9 @@ suplování</string>
       </item>
       <item>
        <widget class="QCheckBox" name="kontrolovatAktualizace">
+        <property name="whatsThis">
+         <string>Checkovat aktualizace při každém spuštění</string>
+        </property>
         <property name="text">
          <string>Kontrolovat aktualizace při každém
 spuštění aplikace</string>
@@ -226,6 +235,9 @@ spuštění aplikace</string>
       </item>
       <item row="0" column="0">
        <widget class="QTreeWidget" name="uzivatele">
+        <property name="whatsThis">
+         <string>Přidejte / Upravte / Smažte uživatele</string>
+        </property>
         <property name="styleSheet">
          <string notr="true">#uzivatele {
 background-color: rgba(255, 255, 255, 60%)

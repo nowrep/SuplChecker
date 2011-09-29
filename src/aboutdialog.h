@@ -17,7 +17,7 @@
 #ifndef ABOUTDIALOG_H
 #define ABOUTDIALOG_H
 
-#include <QWidget>
+#include <QDialog>
 #include <QPointer>
 
 namespace Ui {
@@ -25,7 +25,7 @@ namespace Ui {
 }
 
 class DebugLogger;
-class AboutDialog : public QWidget
+class AboutDialog : public QDialog
 {
     Q_OBJECT
 

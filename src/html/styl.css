@@ -1,5 +1,5 @@
 body {
-background: url(data:image/png;base64,%BG-IMG%);
+background: url('qrc:/html/%BG-IMG-NAME%');
 background-position:right bottom;
 background-attachment:fixed;
 }

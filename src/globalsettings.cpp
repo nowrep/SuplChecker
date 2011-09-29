@@ -15,6 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "globalsettings.h"
+#include "globalfunctions.h"
 #include <QApplication>
 
 QString GlobalSettings::DataDir;
@@ -23,12 +24,31 @@ QList<GlobalSettings::User> GlobalSettings::AllUsers;
 QStringList GlobalSettings::AvailableServers;
 QString GlobalSettings::BackgroundPixmapPath;
 QString GlobalSettings::BackgroundPixmapName;
+QByteArray GlobalSettings::m_bgPixmapData;
 
+bool GlobalSettings::m_reloadPixmap = true;
 bool GlobalSettings::ShowDaysWithoutSubs;
 bool GlobalSettings::CheckUpdates;
 
 GlobalSettings::GlobalSettings()
 {
+}
+
+void GlobalSettings::setBackgroundPixmap(const QString &name)
+{
+    m_reloadPixmap = true;
+    BackgroundPixmapName = name;
+    BackgroundPixmapPath = ":html/" + name;
+}
+
+QByteArray GlobalSettings::backgroundPixmapData()
+{
+    if (m_reloadPixmap) {
+        m_bgPixmapData = sc_pixmapToByteArray(QPixmap(BackgroundPixmapPath));
+        m_reloadPixmap = false;
+    }
+
+    return m_bgPixmapData;
 }
 
 void GlobalSettings::loadSettings()
@@ -40,8 +60,7 @@ void GlobalSettings::loadSettings()
     AvailableServers = settings.value("servers", QStringList() << "http://g8mb.cz/bakaweb/" << "http://gserver/bakaweb/").toStringList();
     ShowDaysWithoutSubs = settings.value("zobrazitDnyBezSuplovani", true).toBool();
     CheckUpdates = settings.value("sledovatAktualizace", true).toBool();
-    BackgroundPixmapName = settings.value("pozadi", "bg-blue.png").toString();
-    BackgroundPixmapPath = ":html/" + BackgroundPixmapName;
+    setBackgroundPixmap( settings.value("pozadi", "bg-blue.png").toString() );
     settings.endGroup();
 
     settings.beginGroup("Uzivatele");

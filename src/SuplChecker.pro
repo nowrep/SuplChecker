@@ -20,25 +20,25 @@ SOURCES = main.cpp\
     parser.cpp \
     nastaveni.cpp \
     globalsettings.cpp \
-    loader.cpp \
     qtwin.cpp \
     debuglogger.cpp \
     aboutdialog.cpp \
     globalfunctions.cpp \
     serversdialog.cpp \
-    suplchecker.cpp
+    suplchecker.cpp \
+    updatechecker.cpp
 
 HEADERS  += \
     parser.h \
     nastaveni.h \
     globalsettings.h \
-    loader.h \
     qtwin.h \
     debuglogger.h \
     aboutdialog.h \
     globalfunctions.h \
     serversdialog.h \
-    suplchecker.h
+    suplchecker.h \
+    updatechecker.h
 
 FORMS    += mainwindow.ui \
     nastaveni.ui \
@@ -54,6 +54,14 @@ OTHER_FILES += \
     appicon.rc \
 
 win32:RC_FILE = appicon.rc
+
+
+
+
+
+
+
+
 
 
 

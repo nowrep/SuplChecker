@@ -53,7 +53,11 @@ SettingsDialog::SettingsDialog(SuplChecker* mainWindow, QWidget* parent) :
     ui(new Ui::nastaveni)
   , m_mainWindow(mainWindow)
 {
+    setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(this);
+#ifdef Q_WS_WIN
+    resize(600, 400);
+#endif
     ui->zobrazDnyBezSuplovani->setChecked( GlobalSettings::ShowDaysWithoutSubs );
     ui->kontrolovatAktualizace->setChecked( GlobalSettings::CheckUpdates );
 
@@ -114,7 +118,7 @@ void SettingsDialog::addUser()
 
 void SettingsDialog::deleteUser()
 {
-    if (!ui->uzivatele->currentItem())
+    if (!ui->uzivatele->currentItem() || ui->uzivatele->topLevelItemCount() == 1)
         return;
 
     GlobalSettings::User usr;
@@ -175,8 +179,7 @@ void SettingsDialog::saveSettings()
 {
     GlobalSettings::ShowDaysWithoutSubs = ui->zobrazDnyBezSuplovani->isChecked();
     GlobalSettings::CheckUpdates = ui->kontrolovatAktualizace->isChecked();
-    GlobalSettings::BackgroundPixmapName = colorToFile(ui->barvaPozadi->currentText());
-    GlobalSettings::BackgroundPixmapPath = ":html/" + GlobalSettings::BackgroundPixmapName;
+    GlobalSettings::setBackgroundPixmap( colorToFile(ui->barvaPozadi->currentText()) );
 
 //    GlobalSettings::AvailableServers = ui->server->currentText();
 
