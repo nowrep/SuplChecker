@@ -1,5 +1,5 @@
 /*  SuplChecker - simple program to check a teacher's absencies at the school
-    Copyright (C) 2010-2011  nowrep
+    Copyright (C) 2010-2011  David Rosca
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@
 #include <QPointer>
 #include <QFrame>
 #include <QCloseEvent>
+#include <QWebElementCollection>
 
 #include "globalsettings.h"
 #include "parser.h"

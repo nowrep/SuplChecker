@@ -1,5 +1,5 @@
 /*  SuplChecker - simple program to check a teacher's absencies at the school
-    Copyright (C) 2010-2011  nowrep
+    Copyright (C) 2010-2011  David Rosca
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -188,7 +188,7 @@ void Parser::parsuj_dalsi(const QString &zdroj, const QString &soubor)
         body.append("</tbody></table>");
     }
     else if (soubor=="pololetni.html") {
-        QString vyraz = "<div class=\"modulin\" >(.*)</div>";
+        QString vyraz = "<div class=\"modulin\" >(.*)</tbody></table>";
         QRegExp rx(vyraz, Qt::CaseInsensitive );
         rx.setMinimal(true);
         rx.indexIn(zdroj);
@@ -198,9 +198,19 @@ void Parser::parsuj_dalsi(const QString &zdroj, const QString &soubor)
         rx2.setMinimal(true);
         captured.remove(rx2);
 
+        captured.replace("<table>", "<table class=\"suplchecker_table\">");
         data = pripravHtml(true);
-        body.append(captured);
-        body.append("</tbody></table>");
+        body.append("<center>" + captured + "</center>");
+    }
+    else if (soubor == "planakci.html") {
+        QString vyraz = "<table class=\"pltable\"(.*)</tbody></table>";
+        QRegExp rx(vyraz, Qt::CaseInsensitive );
+        rx.setMinimal(true);
+        rx.indexIn(zdroj);
+        QString captured = rx.cap(0);
+
+        data = pripravHtml(true);
+        body.append("<center>" + captured + "</center>");
     }
     else {
         qWarning("Parser::parsuj_dalsi neznamy soubor");
@@ -388,16 +398,22 @@ void Parser::work()
     QString pololetni = send_request(m_activeServer + "prehled.aspx?s=4", POST, postData); // pololetni znamky jsou doma
     parsuj_dalsi(pololetni, "pololetni.html");
 
-//    if (GlobalSettings::CheckUpdates && m_checkUpdates) {
-//        qDebug() << "checking for updates...";
-//        QString actual_version = send_request(QUrl("http://suplchecker.wz.cz/version.php"));
-//        qDebug() << "current version: " << SuplChecker::VERSION << " - actual version: " << actual_version;
+    //PLAN AKCI
+    temp = send_request(m_activeServer + "prehled.aspx?s=17");
+    viewstate = getInput(temp, "VIEWSTATE");
+    eventtarget = getInput(temp, "EVENTTARGET");
+    eventvalidation = getInput(temp, "EVENTVALIDATION");
 
-//        if (!actual_version.contains(SuplChecker::VERSION) && !actual_version.isEmpty()) {
-//            QString changelog = send_request(QUrl("http://suplchecker.wz.cz/changelog.php"));
-//            emit aktualizace(actual_version, changelog);
-//        }
-//    }
+    postData.clear();
+    postData.append("__VIEWSTATE=" + viewstate + "&");
+    postData.append("__EVENTTARGET=" + eventtarget + "&");
+    postData.append("__EVENTVALIDATION=" + eventvalidation + "&");
+    postData.append("ctl00%24cphmain%24dropplan=pololetí&");
+//    postData.append("ctl00%24cphmain%24Flyout0%24checksvatky=on&");
+    postData.append("__EVENTARGUMENT=&");
+    postData.append("__LASTFOCUS=&");
+    QString planAkci = send_request(m_activeServer + "prehled.aspx?s=17", POST, postData); // plan akci je doma
+    parsuj_dalsi(planAkci, "planakci.html");
 }
 
 Parser::~Parser()

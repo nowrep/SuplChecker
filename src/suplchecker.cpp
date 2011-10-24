@@ -1,5 +1,5 @@
 /*  SuplChecker - simple program to check a teacher's absencies at the school
-    Copyright (C) 2010-2011  nowrep
+    Copyright (C) 2010-2011  David Rosca
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@
 #include "globalfunctions.h"
 #include "updatechecker.h"
 
-const QString SuplChecker::VERSION = "0.8.0";
+const QString SuplChecker::VERSION = "0.9.0";
 const QString SuplChecker::BUILDTIME = __DATE__" "__TIME__;
-const QString SuplChecker::AUTHOR = "nowrep";
+const QString SuplChecker::AUTHOR = "David Rosca";
 const QString SuplChecker::COPYRIGHT = "2010-2011";
 const QString SuplChecker::WWWADDRESS = "http://suplchecker.wz.cz";
 
@@ -112,7 +112,11 @@ SuplChecker::SuplChecker(QWidget *parent)
     connect(m_usersMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowUsersMenu()));
 
     if (GlobalSettings::CheckUpdates)
-        QTimer::singleShot(5000, this, SLOT(checkUpdates()));
+        QTimer::singleShot(10000, this, SLOT(checkUpdates()));
+
+    QDate current = QDate::currentDate();
+    if (current.dayOfWeek() == 6 || current.dayOfWeek() == 7)
+        ui->tabWidget->setCurrentIndex(1);
 }
 
 void SuplChecker::errorNoStartupUser()
@@ -154,6 +158,7 @@ void SuplChecker::startLoading(GlobalSettings::User user)
     ui->webView_3->setContent(html);
     ui->webView_4->setContent(html);
     ui->webView_5->setContent(html);
+    ui->webView_6->setContent(html);
 
     m_threadParser = new Parser(user.name, user.password);
 
@@ -206,14 +211,29 @@ void SuplChecker::nacti(QString info, QByteArray data)
 {
     if (info=="tentotyden.html")
         ui->webView_1->page()->mainFrame()->setContent(data);
-    if (info=="dalsityden.html")
+    else if (info=="dalsityden.html")
         ui->webView_2->page()->mainFrame()->setContent(data);
-    if (info=="stalyrozvrh.html")
+    else if (info=="stalyrozvrh.html")
         ui->webView_3->page()->mainFrame()->setContent(data);
-    if (info=="znamky.html")
+    else if (info=="znamky.html")
         ui->webView_4->page()->mainFrame()->setContent(data);
-    if (info=="pololetni.html")
+    else if (info=="pololetni.html")
         ui->webView_5->page()->mainFrame()->setContent(data);
+    else if (info=="planakci.html") {
+        ui->webView_6->page()->mainFrame()->setContent(data);
+
+        //Scroll to actual date
+        QString actualMonth = "." + QString::number(QDate::currentDate().month()) + ".";
+        QWebElementCollection col = ui->webView_6->page()->mainFrame()->documentElement().findAll("div[class=\"pldena\"]");
+        foreach (QWebElement element, col) {
+            if (element.toPlainText().contains(actualMonth)) {
+                element.prependInside("<a name=\"scrollhere\"> </a>");
+                break;
+            }
+        }
+
+        ui->webView_6->page()->mainFrame()->scrollToAnchor("scrollhere");
+    }
 }
 
 void SuplChecker::jmeno(const Parser::Student &s)

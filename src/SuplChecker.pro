@@ -54,28 +54,3 @@ OTHER_FILES += \
     appicon.rc \
 
 win32:RC_FILE = appicon.rc
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

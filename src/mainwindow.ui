@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>SuplChecker</class>
  <widget class="QMainWindow" name="SuplChecker">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,12 +9,6 @@
     <width>683</width>
     <height>555</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -62,15 +53,17 @@
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QTabWidget::pane {  }
+QTabWidget::tab-bar { alignment: center; }
+</string>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <property name="documentMode">
-       <bool>true</bool>
-      </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Rozvrh na tento týden</string>
+        <string>Tento týden</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="margin">
@@ -98,7 +91,7 @@
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
-        <string>Rozvrh na příští týden</string>
+        <string>Příští týden</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="margin">
@@ -184,7 +177,7 @@
        <attribute name="title">
         <string>Pololetní klasifikace</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -200,6 +193,26 @@
            <url>
             <string>about:blank</string>
            </url>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_6">
+       <attribute name="title">
+        <string>Plán akcí</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QWebView" name="webView_6">
+          <property name="contextMenuPolicy">
+           <enum>Qt::NoContextMenu</enum>
           </property>
          </widget>
         </item>

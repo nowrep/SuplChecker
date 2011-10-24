@@ -18,7 +18,7 @@ BEGIN
             VALUE "CompanyName", "SuplChecker Association"
             VALUE "FileDescription", "SuplChecker for G8MB"
             VALUE "FileVersion", "0.8.0.0"
-            VALUE "LegalCopyright", "Copyright (C) 2010-2011 nowrep"
+            VALUE "LegalCopyright", "Copyright (C) 2010-2011 David Rosca"
             VALUE "InternalName", "suplchecker"
             VALUE "OriginalFilename", "suplchecker.exe"
             VALUE "ProductName", "SuplChecker"

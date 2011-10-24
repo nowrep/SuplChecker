@@ -1602,6 +1602,307 @@ background-color:#ffefbe;
 background-color:#ffefbe;
 }
 
+.planinfo {
+border-color:Black;
+border-width:1px;
+border-style:solid;
+padding:8px;
+width:400px;
+}
+
+.pinadpis {
+font-weight:bold;
+font-size:10pt;
+margin-bottom:8px;
+padding:3px;
+}
+
+.pipopis {
+font-weight:normal;
+font-style:italic;
+font-size:8pt;
+margin-bottom:9px;
+}
+
+.pitext {
+font-weight:bold;
+font-style:normal;
+font-size:8pt;
+margin-bottom:9px;
+}
+
+.pitext2 {
+font-weight:normal;
+font-style:normal;
+font-size:7pt;
+margin-bottom:9px;
+}
+
+
+.pitext3 {
+font-weight:normal;
+font-style:italic;
+font-size:7pt;
+margin-bottom:9px;
+}
+
+
+.tdakce
+{
+ border-bottom-style: solid;
+ border-bottom-width: 1px;
+}
+
+.tdakce2
+{
+ border-bottom-style: solid;
+ border-bottom-width: 1px;
+}
+/* styly pto plan akci */
+
+
+.pltablein {
+ text-align:center;
+ }
+ 
+
+.pltable 
+{
+    border-width:1px;
+    border-style:solid;
+    text-align:left;
+
+}
+
+
+.plhlava {
+font-size:13px;
+font-weight:bold;
+}
+
+.plhlava2 {
+padding-left:10px;
+padding-right:10px;
+padding-top:3px;
+padding-bottom:3px;
+}
+
+.plradek 
+{
+ text-align:left;
+}
+
+
+.plradek2 
+{
+ padding:1px;
+ border-top-style: solid;
+ border-top-width: 1px;
+ text-align:left;
+
+}
+
+
+.plden 
+{
+ font-size:13px;
+ vertical-align:top;
+}
+
+.pldena 
+{
+padding-left:10px;
+padding-right:10px;
+ padding-top:3px;
+ padding-bottom:3px;
+text-align:center;
+}
+
+.plden2
+{
+ font-size:10px;
+}
+
+
+.pltermin 
+{
+ font-size:9px;
+ white-space:nowrap;
+}    
+
+.plakce 
+{
+   font-size:10pt;
+   font-weight:bold;
+   width:400px;
+   text-align:left;
+   padding:3px;
+}
+
+.aplakce
+{
+   font-size:10pt;
+   font-weight:bold;
+   width:400px;
+   text-align:left;
+   padding:3px;
+}
+
+
+.plakce2 
+{
+   font-size:8pt;
+   font-weight:normal;
+   font-style:italic;
+   width:400px;
+   text-align:left;
+   padding:3px;
+}
 
 
 
+
+.aplakce2
+{
+   font-size:8pt;
+   font-weight:normal;
+   font-style:italic;
+   width:400px;
+   text-align:left;
+   padding:3px;
+}
+
+.plpopis
+{
+   font-size:10px;
+   width:400px;
+   text-align:left;
+   font-weight:normal;
+}
+ 
+
+.plintpozn {
+   font-size:9px;
+   font-style:italic;
+   text-align:left;
+   font-weight:normal;
+}
+
+
+.plsvatek {
+font-size:9px;
+font-style:italic;
+}
+
+
+.uplantab {
+font-size:7pt;
+margin-bottom:10px;
+}
+
+.uplantab td {
+margin-bottom:5px;
+}
+
+
+.uplandatum {
+font-weight:bold;
+}
+
+.uplanpopis {
+font-size:7pt;
+
+}
+
+
+
+
+.loggrid {
+text-align:center;
+}
+
+.deldialog {
+padding-top:30px;
+width:100%;
+text-align:center;
+}
+
+
+/* styly pro pololetni klasifikaci */
+
+
+.polonadpis1 {
+font-weight:bold;
+font-size:10px;
+}
+
+
+
+.polonadpis2 {
+font-weight:bold;
+font-size:10px;
+text-align:center;
+}
+
+.polonadpis2opak {
+font-weight:bold;
+font-size:10px;
+text-align:center;
+}
+
+.polonadpis3 {
+font-weight:bold;
+font-size:12px;
+}
+
+.polonadpis3opak {
+font-weight:bold;
+font-size:12px;
+}
+
+.polonadpis4 {
+font-weight:bold;
+font-size:13px;
+}
+
+.polonadpis5 {
+font-weight:bold;
+font-size:10px;
+}
+
+
+.poloznamka {
+font-weight:normal;
+font-size:11px;
+text-align:center;
+}
+
+.poloznamkaopak {
+font-weight:normal;
+font-size:11px;
+text-align:center;
+}
+
+.poloznamka2 {
+font-weight:normal;
+font-size:11px;
+text-align:center;
+}
+
+.poloznamka2opak {
+font-weight:normal;
+font-size:11px;
+text-align:center;
+}
+
+
+.polonazev {
+font-weight:bold;
+font-size:13px;
+}
+
+.suplchecker_table {
+background-color: #ffefbe;
+padding: 20px;
+padding-top: 5px;
+}
