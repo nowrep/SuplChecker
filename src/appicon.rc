@@ -3,8 +3,8 @@
 IDI_ICON1		ICON		DISCARDABLE	"icons\exeicons\suplchecker.ico"
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,8,0,0
- PRODUCTVERSION 0,8,0,0
+ FILEVERSION 0,9,0,0
+ PRODUCTVERSION 0,9,0,0
  FILEFLAGS 0x0L
  FILEFLAGSMASK 0x3fL
  FILEOS 0x00040004L
@@ -17,12 +17,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "SuplChecker Association"
             VALUE "FileDescription", "SuplChecker for G8MB"
-            VALUE "FileVersion", "0.8.0.0"
+            VALUE "FileVersion", "0.9.0.0"
             VALUE "LegalCopyright", "Copyright (C) 2010-2011 David Rosca"
             VALUE "InternalName", "suplchecker"
             VALUE "OriginalFilename", "suplchecker.exe"
             VALUE "ProductName", "SuplChecker"
-            VALUE "ProductVersion", "0.8.0.0"
+            VALUE "ProductVersion", "0.9.0.0"
         END
     END
     BLOCK "VarFileInfo"

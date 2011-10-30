@@ -4,3 +4,4 @@ Makefile
 *.o
 ui_*
 *.ini
+bin/suplchecker
