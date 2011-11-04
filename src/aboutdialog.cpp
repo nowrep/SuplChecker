@@ -26,10 +26,8 @@ AboutDialog::AboutDialog(QWidget *parent)
     , m_debugLogger(0)
 {
     setAttribute(Qt::WA_DeleteOnClose);
-    setWindowFlags(windowFlags() ^ Qt::WindowMaximizeButtonHint ^ Qt::WindowMinimizeButtonHint);
 
     ui->setupUi(this);
-    sc_centerWidgetOnScreen(this);
 
     ui->textBrowser->setHtml(QString("<center><h2>SuplChecker</h2>"
                              "<b>Verze:</b> %1 <br /><b>Datum:</b> %2 <br /><br />"
@@ -48,7 +46,7 @@ void AboutDialog::openLog()
     close();
 
     if (!m_debugLogger)
-        m_debugLogger = new DebugLogger();
+        m_debugLogger = new DebugLogger(parentWidget());
 
     m_debugLogger->show();
     m_debugLogger->raise();

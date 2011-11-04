@@ -25,7 +25,7 @@
 #include "globalfunctions.h"
 #include "updatechecker.h"
 
-const QString SuplChecker::VERSION = "0.9.0";
+const QString SuplChecker::VERSION = "0.9.1";
 const QString SuplChecker::BUILDTIME = __DATE__" "__TIME__;
 const QString SuplChecker::AUTHOR = "David Rosca";
 const QString SuplChecker::COPYRIGHT = "2010-2011";
@@ -187,7 +187,7 @@ void SuplChecker::deleteThread()
 void SuplChecker::aboutProgram()
 {
     if (!m_aboutDialog)
-        m_aboutDialog = new AboutDialog();
+        m_aboutDialog = new AboutDialog(this);
 
     m_aboutDialog->show();
 }

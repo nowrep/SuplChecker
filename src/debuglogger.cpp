@@ -21,15 +21,15 @@
 
 QString DebugLogger::m_log;
 
-DebugLogger::DebugLogger(QWidget *parent)
-    : QWidget(parent)
+DebugLogger::DebugLogger(QWidget* parent)
+    : QDialog(parent)
     , ui(new Ui::DebugLogger)
 {
     setAttribute(Qt::WA_DeleteOnClose);
-    setWindowFlags(windowFlags() ^ Qt::WindowMaximizeButtonHint ^ Qt::WindowMinimizeButtonHint);
+//    setWindowFlags(windowFlags() ^ Qt::WindowMaximizeButtonHint ^ Qt::WindowMinimizeButtonHint);
 
     ui->setupUi(this);
-    sc_centerWidgetOnScreen(this);
+    sc_centerWidgetToParent(this, qApp->activeWindow());
 
     loadLog();
 

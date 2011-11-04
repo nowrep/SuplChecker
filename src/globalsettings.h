@@ -31,7 +31,7 @@ public:
 
         bool operator==(const User &a)
         {
-            return (a.name == name && a.password == password);
+            return (a.name == this->name && a.password == this->password);
         }
 
         bool operator!=(const User &a)

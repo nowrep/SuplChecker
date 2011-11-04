@@ -17,13 +17,13 @@
 #ifndef DEBUGLOGGER_H
 #define DEBUGLOGGER_H
 
-#include <QWidget>
+#include <QDialog>
 
 namespace Ui {
     class DebugLogger;
 }
 
-class DebugLogger : public QWidget
+class DebugLogger : public QDialog
 {
     Q_OBJECT
 

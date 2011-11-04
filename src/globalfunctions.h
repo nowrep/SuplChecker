@@ -29,5 +29,6 @@ QByteArray sc_pixmapToByteArray(const QPixmap &pix, const char* type = "PNG");
 QByteArray sc_readAllFileContents(const QString &filename);
 
 void sc_centerWidgetOnScreen(QWidget* w);
+void sc_centerWidgetToParent(QWidget* w, QWidget* parent);
 
 #endif // GLOBALFUNCTIONS_H
