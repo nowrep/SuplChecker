@@ -26,7 +26,8 @@ SOURCES = main.cpp\
     globalfunctions.cpp \
     serversdialog.cpp \
     suplchecker.cpp \
-    updatechecker.cpp
+    updatechecker.cpp \
+    webview.cpp
 
 HEADERS  += \
     parser.h \
@@ -38,7 +39,8 @@ HEADERS  += \
     globalfunctions.h \
     serversdialog.h \
     suplchecker.h \
-    updatechecker.h
+    updatechecker.h \
+    webview.h
 
 FORMS    += mainwindow.ui \
     nastaveni.ui \
@@ -54,3 +56,5 @@ OTHER_FILES += \
     appicon.rc \
 
 win32:RC_FILE = appicon.rc
+
+

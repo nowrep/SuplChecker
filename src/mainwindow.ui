@@ -70,7 +70,7 @@ QTabWidget::tab-bar { alignment: center; }
          <number>0</number>
         </property>
         <item>
-         <widget class="QWebView" name="webView_1">
+         <widget class="WebView" name="webView_1" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -80,7 +80,7 @@ QTabWidget::tab-bar { alignment: center; }
           <property name="contextMenuPolicy">
            <enum>Qt::NoContextMenu</enum>
           </property>
-          <property name="url">
+          <property name="url" stdset="0">
            <url>
             <string>file:</string>
            </url>
@@ -98,7 +98,7 @@ QTabWidget::tab-bar { alignment: center; }
          <number>0</number>
         </property>
         <item>
-         <widget class="QWebView" name="webView_2">
+         <widget class="WebView" name="webView_2" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -108,7 +108,7 @@ QTabWidget::tab-bar { alignment: center; }
           <property name="contextMenuPolicy">
            <enum>Qt::NoContextMenu</enum>
           </property>
-          <property name="url">
+          <property name="url" stdset="0">
            <url>
             <string>file:</string>
            </url>
@@ -126,7 +126,7 @@ QTabWidget::tab-bar { alignment: center; }
          <number>0</number>
         </property>
         <item>
-         <widget class="QWebView" name="webView_3">
+         <widget class="WebView" name="webView_3" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -136,7 +136,7 @@ QTabWidget::tab-bar { alignment: center; }
           <property name="contextMenuPolicy">
            <enum>Qt::NoContextMenu</enum>
           </property>
-          <property name="url">
+          <property name="url" stdset="0">
            <url>
             <string>file:</string>
            </url>
@@ -154,7 +154,7 @@ QTabWidget::tab-bar { alignment: center; }
          <number>0</number>
         </property>
         <item>
-         <widget class="QWebView" name="webView_4">
+         <widget class="WebView" name="webView_4" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -164,7 +164,7 @@ QTabWidget::tab-bar { alignment: center; }
           <property name="contextMenuPolicy">
            <enum>Qt::NoContextMenu</enum>
           </property>
-          <property name="url">
+          <property name="url" stdset="0">
            <url>
             <string>file:</string>
            </url>
@@ -185,11 +185,11 @@ QTabWidget::tab-bar { alignment: center; }
          <number>0</number>
         </property>
         <item>
-         <widget class="QWebView" name="webView_5">
+         <widget class="WebView" name="webView_5" native="true">
           <property name="contextMenuPolicy">
            <enum>Qt::NoContextMenu</enum>
           </property>
-          <property name="url">
+          <property name="url" stdset="0">
            <url>
             <string>about:blank</string>
            </url>
@@ -210,7 +210,7 @@ QTabWidget::tab-bar { alignment: center; }
          <number>0</number>
         </property>
         <item>
-         <widget class="QWebView" name="webView_6">
+         <widget class="WebView" name="webView_6" native="true">
           <property name="contextMenuPolicy">
            <enum>Qt::NoContextMenu</enum>
           </property>
@@ -226,9 +226,10 @@ QTabWidget::tab-bar { alignment: center; }
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
+   <class>WebView</class>
    <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
+   <header>webview.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

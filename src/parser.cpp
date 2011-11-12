@@ -254,7 +254,7 @@ QString Parser::send_request(const QUrl &url, Operation method, QByteArray postD
 
     QNetworkReply* reply;
     QNetworkRequest req(url);
-    req.setRawHeader("User-Agent", "SuplChecker by davros");
+    req.setRawHeader("User-Agent", "SuplChecker by David Rosca");
 
     if (method == GET)
         reply = m_manager->get(req);
