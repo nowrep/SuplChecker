@@ -196,7 +196,7 @@ void SuplChecker::showSettingsDialog()
 {
     SettingsDialog* window = new SettingsDialog(this,this);
     connect(window, SIGNAL(userModified(GlobalSettings::User,GlobalSettings::User)), this, SLOT(userModified(GlobalSettings::User,GlobalSettings::User)));
-    window->exec();
+    window->show();
 }
 
 void SuplChecker::userModified(const GlobalSettings::User &before, const GlobalSettings::User &after)
