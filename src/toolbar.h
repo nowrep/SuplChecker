@@ -15,21 +15,27 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
-#ifndef GLOBALFUNCTIONS_H
-#define GLOBALFUNCTIONS_H
+#ifndef TOOLBAR_H
+#define TOOLBAR_H
 
-#include <QByteArray>
-#include <QPixmap>
-#include <QBuffer>
-#include <QFile>
-#include <QWidget>
-#include <QApplication>
-#include <QDesktopWidget>
+#include <QToolBar>
 
-QByteArray sc_pixmapToByteArray(const QPixmap &pix, const char* type = "PNG");
-QByteArray sc_readAllFileContents(const QString &filename);
+class SuplChecker;
 
-void sc_centerWidgetOnScreen(QWidget* w);
-void sc_centerWidgetToParent(QWidget* w, QWidget* parent);
+class ToolBar : public QToolBar
+{
+    Q_OBJECT
+public:
+    explicit ToolBar(SuplChecker* parent);
 
-#endif // GLOBALFUNCTIONS_H
+private:
+    void mousePressEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
+
+    SuplChecker* m_mainWindow;
+    QPoint m_dragPosition;
+
+};
+
+#endif // TOOLBAR_H

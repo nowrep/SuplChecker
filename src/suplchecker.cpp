@@ -1,19 +1,20 @@
-/*  SuplChecker - simple program to check a teacher's absencies at the school
-    Copyright (C) 2010-2011  David Rosca
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/* ============================================================
+* SuplChecker - simple program to check a teacher's absencies at school
+* Copyright (C) 2010-2012  David Rosca <david@rosca.cz>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* ============================================================ */
 #include "suplchecker.h"
 #include "parser.h"
 #include "ui_mainwindow.h"
@@ -24,12 +25,15 @@
 #include "ui_erroroverlay.h"
 #include "globalfunctions.h"
 #include "updatechecker.h"
+#include "toolbar.h"
 
-const QString SuplChecker::VERSION = "0.9.1";
+const QString SuplChecker::VERSION = "1.0.1";
 const QString SuplChecker::BUILDTIME = __DATE__" "__TIME__;
 const QString SuplChecker::AUTHOR = "David Rosca";
-const QString SuplChecker::COPYRIGHT = "2010-2011";
+const QString SuplChecker::COPYRIGHT = "2010-2012";
 const QString SuplChecker::WWWADDRESS = "http://suplchecker.wz.cz";
+
+#define CHECK_THREAD Parser* thread = qobject_cast<Parser*>(sender()); if (!thread || thread != m_threadParser) return
 
 QIcon SuplChecker::suplcheckerIcon()
 {
@@ -43,7 +47,7 @@ QIcon SuplChecker::suplcheckerIcon()
     return i;
 }
 
-SuplChecker::SuplChecker(QWidget *parent)
+SuplChecker::SuplChecker(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::SuplChecker)
     , m_aboutDialog(0)
@@ -71,7 +75,7 @@ SuplChecker::SuplChecker(QWidget *parent)
                   "QToolButton::pressed {border-image: url(':/icons/toolbar/button-pressed.png');}"
                   "QToolButton::menu-indicator { image: url(:/icons/transp.png);}");
 
-    QToolBar* leftToolbar = new QToolBar(this);
+    ToolBar* leftToolbar = new ToolBar(this);
     leftToolbar->setContextMenuPolicy(Qt::CustomContextMenu);
     QWidget* spa = new QWidget();
     spa->setMinimumWidth(190);
@@ -89,10 +93,10 @@ SuplChecker::SuplChecker(QWidget *parent)
 
     leftToolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     leftToolbar->setMovable(false);
-    leftToolbar->setIconSize(QSize(20,20));
+    leftToolbar->setIconSize(QSize(20, 20));
     addToolBar(leftToolbar);
 
-    QToolBar* rightToolbar = new QToolBar(this);
+    ToolBar* rightToolbar = new ToolBar(this);
     QWidget* spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     rightToolbar->addWidget(spacer);
@@ -102,21 +106,27 @@ SuplChecker::SuplChecker(QWidget *parent)
     rightToolbar->setContextMenuPolicy(Qt::CustomContextMenu);
     addToolBar(rightToolbar);
 
-    if (GlobalSettings::StartupUser.name == "jmeno")
+    new QShortcut(QKeySequence("Ctrl+Q"), this, SLOT(close()));
+
+    if (GlobalSettings::StartupUser.name == "jmeno") {
         QTimer::singleShot(0, this, SLOT(errorNoStartupUser()));
-    else
+    }
+    else {
         startLoading(GlobalSettings::StartupUser);
+    }
 
     sc_centerWidgetOnScreen(this);
 
     connect(m_usersMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowUsersMenu()));
 
-    if (GlobalSettings::CheckUpdates)
+    if (GlobalSettings::CheckUpdates) {
         QTimer::singleShot(10000, this, SLOT(checkUpdates()));
+    }
 
     QDate current = QDate::currentDate();
-    if (current.dayOfWeek() == 6 || current.dayOfWeek() == 7)
+    if (current.dayOfWeek() == 6 || current.dayOfWeek() == 7) {
         ui->tabWidget->setCurrentIndex(1);
+    }
 }
 
 void SuplChecker::errorNoStartupUser()
@@ -124,28 +134,18 @@ void SuplChecker::errorNoStartupUser()
     chyba(Parser::NoStartupUser);
 }
 
-void SuplChecker::setLoading(bool set)
-{
-    m_isLoading = set;
-}
-
 void SuplChecker::checkUpdates()
 {
     UpdateChecker* c = new UpdateChecker;
-    connect(c, SIGNAL(updateAvailable(QString,QString)), this, SLOT(aktualizace(QString,QString)));
+    connect(c, SIGNAL(updateAvailable(QString, QString)), this, SLOT(aktualizace(QString, QString)));
     c->start();
 }
 
 void SuplChecker::startLoading(GlobalSettings::User user)
 {
-    if (m_isLoading)
-        return;
-
-    if (m_errorFrame)
+    if (m_errorFrame) {
         delete m_errorFrame;
-
-    if (m_threadParser)
-        delete m_threadParser;
+    }
 
     m_usersButton->setText("Načítám ...");
     m_activeUser = user;
@@ -163,69 +163,74 @@ void SuplChecker::startLoading(GlobalSettings::User user)
     m_threadParser = new Parser(user.name, user.password);
 
     connect(m_threadParser, SIGNAL(studentName(Parser::Student)), this, SLOT(jmeno(Parser::Student)));
-    connect(m_threadParser, SIGNAL(done(QString,QByteArray)), this, SLOT(nacti(QString,QByteArray)));
+    connect(m_threadParser, SIGNAL(done(QString, QByteArray)), this, SLOT(nacti(QString, QByteArray)));
     connect(m_threadParser, SIGNAL(error(Parser::Error)), this, SLOT(chyba(Parser::Error)));
-    connect(m_threadParser, SIGNAL(loading(bool)), this, SLOT(setLoading(bool)));
-    connect(m_threadParser, SIGNAL(deleteNow()),this, SLOT(deleteThread()));
+    connect(m_threadParser, SIGNAL(finished()), this, SLOT(deleteThread()));
 
     m_threadParser->start();
 }
 
 void SuplChecker::deleteThread()
 {
-    if (!m_threadParser)
+    Parser* thread = qobject_cast<Parser*>(sender());
+    if (!thread) {
         return;
-
-    if (m_threadParser->isFinished())
-        delete m_threadParser;
-    else {
-        qDebug() << "loading thread still running. trying to delete next second...";
-        QTimer::singleShot(3 * 1000, this, SLOT(deleteThread()));
     }
+
+    thread->deleteLater();
 }
 
 void SuplChecker::aboutProgram()
 {
-    if (!m_aboutDialog)
+    if (!m_aboutDialog) {
         m_aboutDialog = new AboutDialog(this);
+    }
 
     m_aboutDialog->show();
 }
 
 void SuplChecker::showSettingsDialog()
 {
-    SettingsDialog* window = new SettingsDialog(this,this);
-    connect(window, SIGNAL(userModified(GlobalSettings::User,GlobalSettings::User)), this, SLOT(userModified(GlobalSettings::User,GlobalSettings::User)));
+    SettingsDialog* window = new SettingsDialog(this, this);
+    connect(window, SIGNAL(userModified(GlobalSettings::User, GlobalSettings::User)), this, SLOT(userModified(GlobalSettings::User, GlobalSettings::User)));
     window->show();
 }
 
 void SuplChecker::userModified(const GlobalSettings::User &before, const GlobalSettings::User &after)
 {
-    if (m_activeUser != before)
+    if (m_activeUser != before) {
         return;
+    }
 
     m_activeUser = after;
 }
 
 void SuplChecker::nacti(QString info, QByteArray data)
 {
-    if (info=="tentotyden.html")
+    CHECK_THREAD;
+
+    if (info == "tentotyden.html") {
         ui->webView_1->page()->mainFrame()->setContent(data);
-    else if (info=="dalsityden.html")
+    }
+    else if (info == "dalsityden.html") {
         ui->webView_2->page()->mainFrame()->setContent(data);
-    else if (info=="stalyrozvrh.html")
+    }
+    else if (info == "stalyrozvrh.html") {
         ui->webView_3->page()->mainFrame()->setContent(data);
-    else if (info=="znamky.html")
+    }
+    else if (info == "znamky.html") {
         ui->webView_4->page()->mainFrame()->setContent(data);
-    else if (info=="pololetni.html")
+    }
+    else if (info == "pololetni.html") {
         ui->webView_5->page()->mainFrame()->setContent(data);
-    else if (info=="planakci.html") {
+    }
+    else if (info == "planakci.html") {
         ui->webView_6->page()->mainFrame()->setContent(data);
 
         //Scroll to actual date
         QString actualMonth = "." + QString::number(QDate::currentDate().month()) + ".";
         QWebElementCollection col = ui->webView_6->page()->mainFrame()->documentElement().findAll("div[class=\"pldena\"]");
-        foreach (QWebElement element, col) {
+        foreach(QWebElement element, col) {
             if (element.toPlainText().contains(actualMonth)) {
                 element.prependInside("<a name=\"scrollhere\"> </a>");
                 break;
@@ -238,6 +243,8 @@ void SuplChecker::nacti(QString info, QByteArray data)
 
 void SuplChecker::jmeno(const Parser::Student &s)
 {
+    CHECK_THREAD;
+
     if (s.jmeno.isEmpty() || s.trida.isEmpty()) {
         qCritical() << "received invalid student name!";
         return;
@@ -266,6 +273,8 @@ void SuplChecker::aktualizace(QString nova, QString changelog)
 
 void SuplChecker::chyba(Parser::Error er)
 {
+    CHECK_THREAD;
+
     QString errorString;
     QPixmap icon;
 
@@ -290,8 +299,9 @@ void SuplChecker::chyba(Parser::Error er)
 
     m_usersButton->setText("Nevybrán uživatel");
 
-    if (m_errorFrame)
+    if (m_errorFrame) {
         delete m_errorFrame;
+    }
 
     m_errorFrame = new QFrame(ui->tabWidget);
     m_errorFrame->setAttribute(Qt::WA_DeleteOnClose);
@@ -299,7 +309,7 @@ void SuplChecker::chyba(Parser::Error er)
     m_errorFrame->setStyleSheet("#fr{background: url(':icons/semi-transp.png');} QFrame[js-frame='true']{border: 1px solid  black;"
                                 "border-bottom: 0px;background-color: white;}"
                                 "QFrame[js-frame2='true']{border: 1px solid  black;border-top: 0px;background-color: #f3f3f3;}"
-                                );
+                               );
 
     Ui_ErrorOverlay* erUi = new Ui_ErrorOverlay();
     erUi->setupUi(m_errorFrame);
@@ -312,20 +322,23 @@ void SuplChecker::chyba(Parser::Error er)
 
 void SuplChecker::reloadWithSameUser()
 {
-    if (GlobalSettings::AllUsers.contains(m_activeUser))
+    if (GlobalSettings::AllUsers.contains(m_activeUser)) {
         startLoading(m_activeUser);
-    else
+    }
+    else {
         startLoading(GlobalSettings::AllUsers.at(0));
+    }
 }
 
 void SuplChecker::aboutToShowUsersMenu()
 {
     m_usersMenu->clear();
 
-    foreach (GlobalSettings::User usr, GlobalSettings::AllUsers) {
+    foreach(GlobalSettings::User usr, GlobalSettings::AllUsers) {
         QString realName = usr.realName;
-        if (realName.isEmpty())
+        if (realName.isEmpty()) {
             realName = usr.name;
+        }
 
         m_usersMenu->addAction(QIcon(":icon.png"), "Načí­st uživatele " + realName, this, SLOT(loadAction()))->setData(usr.name);
     }
@@ -333,7 +346,7 @@ void SuplChecker::aboutToShowUsersMenu()
 
 void SuplChecker::vybrano(QString text)
 {
-    foreach (GlobalSettings::User usr, GlobalSettings::AllUsers) {
+    foreach(GlobalSettings::User usr, GlobalSettings::AllUsers) {
         if (usr.name == text) {
             startLoading(usr);
             return;
@@ -343,11 +356,12 @@ void SuplChecker::vybrano(QString text)
 
 void SuplChecker::loadAction()
 {
-    if (QAction *action = qobject_cast<QAction*>(sender()))
+    if (QAction* action = qobject_cast<QAction*>(sender())) {
         vybrano(action->data().toString());
+    }
 }
 
-void SuplChecker::closeEvent(QCloseEvent *e)
+void SuplChecker::closeEvent(QCloseEvent* e)
 {
     qApp->closeAllWindows();
     e->accept();

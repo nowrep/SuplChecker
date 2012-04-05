@@ -15,38 +15,44 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * ============================================================ */
-#ifndef UPDATECHECKER_H
-#define UPDATECHECKER_H
+#include "toolbar.h"
+#include "suplchecker.h"
 
-#include <QThread>
-#include <QTimer>
-#include <QNetworkAccessManager>
-#include <QUrl>
-#include <QEventLoop>
+#include <QMouseEvent>
 
-class UpdateChecker : public QThread
+ToolBar::ToolBar(SuplChecker* parent)
+    : QToolBar(parent)
+    , m_mainWindow(parent)
 {
-    Q_OBJECT
-public:
-    explicit UpdateChecker(QObject* parent = 0);
+}
 
-    enum Operation { GET, POST };
+void ToolBar::mousePressEvent(QMouseEvent* e)
+{
+    m_dragPosition = QPoint();
 
-protected:
-    void run();
+    QToolButton* button = qobject_cast<QToolButton*>(widgetForAction(actionAt(e->pos())));
 
-signals:
-    void updateAvailable(const QString &version, const QString &changelog);
+    if (e->button() == Qt::LeftButton && !button) {
+        m_dragPosition = e->globalPos() - m_mainWindow->frameGeometry().topLeft();
+        e->accept();
+    }
 
-public slots:
+    QToolBar::mousePressEvent(e);
+}
 
-private:
-    QNetworkAccessManager* m_manager;
-    QString send_request(const QUrl &url, Operation method = GET, QByteArray postData = "");
+void ToolBar::mouseReleaseEvent(QMouseEvent* e)
+{
+    m_dragPosition = QPoint();
 
-private slots:
-    void startWork();
+    QToolBar::mouseReleaseEvent(e);
+}
 
-};
+void ToolBar::mouseMoveEvent(QMouseEvent* e)
+{
+    if (e->buttons() & Qt::LeftButton && !m_dragPosition.isNull()) {
+        m_mainWindow->move(e->globalPos() - m_dragPosition);
+        e->accept();
+    }
 
-#endif // UPDATECHECKER_H
+    QToolBar::mouseMoveEvent(e);
+}

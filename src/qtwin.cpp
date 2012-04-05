@@ -40,28 +40,26 @@
 #define DWM_BB_TRANSITIONONMAXIMIZED  0x00000004  // fTransitionOnMaximized has been specified
 #define WM_DWMCOMPOSITIONCHANGED        0x031E    // Composition changed window message
 
-typedef struct _DWM_BLURBEHIND
-{
+typedef struct _DWM_BLURBEHIND {
     DWORD dwFlags;
     BOOL fEnable;
     HRGN hRgnBlur;
     BOOL fTransitionOnMaximized;
 } DWM_BLURBEHIND, *PDWM_BLURBEHIND;
 
-typedef struct _MARGINS
-{
+typedef struct _MARGINS {
     int cxLeftWidth;
     int cxRightWidth;
     int cyTopHeight;
     int cyBottomHeight;
 } MARGINS, *PMARGINS;
 
-typedef HRESULT (WINAPI *PtrDwmIsCompositionEnabled)(BOOL* pfEnabled);
-typedef HRESULT (WINAPI *PtrDwmExtendFrameIntoClientArea)(HWND hWnd, const MARGINS* pMarInset);
-typedef HRESULT (WINAPI *PtrDwmEnableBlurBehindWindow)(HWND hWnd, const DWM_BLURBEHIND* pBlurBehind);
-typedef HRESULT (WINAPI *PtrDwmGetColorizationColor)(DWORD *pcrColorization, BOOL *pfOpaqueBlend);
+typedef HRESULT(WINAPI* PtrDwmIsCompositionEnabled)(BOOL* pfEnabled);
+typedef HRESULT(WINAPI* PtrDwmExtendFrameIntoClientArea)(HWND hWnd, const MARGINS* pMarInset);
+typedef HRESULT(WINAPI* PtrDwmEnableBlurBehindWindow)(HWND hWnd, const DWM_BLURBEHIND* pBlurBehind);
+typedef HRESULT(WINAPI* PtrDwmGetColorizationColor)(DWORD* pcrColorization, BOOL* pfOpaqueBlend);
 
-static PtrDwmIsCompositionEnabled pDwmIsCompositionEnabled= 0;
+static PtrDwmIsCompositionEnabled pDwmIsCompositionEnabled = 0;
 static PtrDwmEnableBlurBehindWindow pDwmEnableBlurBehindWindow = 0;
 static PtrDwmExtendFrameIntoClientArea pDwmExtendFrameIntoClientArea = 0;
 static PtrDwmGetColorizationColor pDwmGetColorizationColor = 0;
@@ -75,10 +73,16 @@ static PtrDwmGetColorizationColor pDwmGetColorizationColor = 0;
 class WindowNotifier : public QWidget
 {
 public:
-    WindowNotifier() { winId(); }
-    void addWidget(QWidget *widget) { widgets.append(widget); }
-    void removeWidget(QWidget *widget) { widgets.removeAll(widget); }
-    bool winEvent(MSG *message, long *result);
+    WindowNotifier() {
+        winId();
+    }
+    void addWidget(QWidget* widget) {
+        widgets.append(widget);
+    }
+    void removeWidget(QWidget* widget) {
+        widgets.removeAll(widget);
+    }
+    bool winEvent(MSG* message, long* result);
 
 private:
     QWidgetList widgets;
@@ -88,7 +92,7 @@ static bool resolveLibs()
 {
     if (!pDwmIsCompositionEnabled) {
         QLibrary dwmLib(QString::fromAscii("dwmapi"));
-        pDwmIsCompositionEnabled =(PtrDwmIsCompositionEnabled)dwmLib.resolve("DwmIsCompositionEnabled");
+        pDwmIsCompositionEnabled = (PtrDwmIsCompositionEnabled)dwmLib.resolve("DwmIsCompositionEnabled");
         pDwmExtendFrameIntoClientArea = (PtrDwmExtendFrameIntoClientArea)dwmLib.resolve("DwmExtendFrameIntoClientArea");
         pDwmEnableBlurBehindWindow = (PtrDwmEnableBlurBehindWindow)dwmLib.resolve("DwmEnableBlurBehindWindow");
         pDwmGetColorizationColor = (PtrDwmGetColorizationColor)dwmLib.resolve("DwmGetColorizationColor");
@@ -131,8 +135,9 @@ bool QtWin::isCompositionEnabled()
         HRESULT hr = S_OK;
         BOOL isEnabled = false;
         hr = pDwmIsCompositionEnabled(&isEnabled);
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(hr)) {
             return isEnabled;
+        }
     }
 #endif
     return false;
@@ -143,7 +148,7 @@ bool QtWin::isCompositionEnabled()
   *
   * \a enable tells if the blur should be enabled or not
   */
-bool QtWin::enableBlurBehindWindow(QWidget *widget, bool enable)
+bool QtWin::enableBlurBehindWindow(QWidget* widget, bool enable)
 {
     Q_UNUSED(enable);
     Q_UNUSED(widget);
@@ -180,7 +185,7 @@ bool QtWin::enableBlurBehindWindow(QWidget *widget, bool enable)
   *
   * \a enable tells if the blur should be enabled or not
   */
-bool QtWin::extendFrameIntoClientArea(QWidget *widget, int left, int top, int right, int bottom)
+bool QtWin::extendFrameIntoClientArea(QWidget* widget, int left, int top, int right, int bottom)
 {
 
     Q_ASSERT(widget);
@@ -223,25 +228,27 @@ QColor QtWin::colorizationColor()
         QLibrary dwmLib(QString::fromAscii("dwmapi"));
         HRESULT hr = S_OK;
         hr = pDwmGetColorizationColor(&color, &opaque);
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(hr)) {
             resultColor = QColor(color);
+        }
     }
 #endif
     return resultColor;
 }
 
 #ifdef Q_WS_WIN
-WindowNotifier *QtWin::windowNotifier()
+WindowNotifier* QtWin::windowNotifier()
 {
-    static WindowNotifier *windowNotifierInstance = 0;
-    if (!windowNotifierInstance)
+    static WindowNotifier* windowNotifierInstance = 0;
+    if (!windowNotifierInstance) {
         windowNotifierInstance = new WindowNotifier;
+    }
     return windowNotifierInstance;
 }
 
 
 /* Notify all enabled windows that the DWM state changed */
-bool WindowNotifier::winEvent(MSG *message, long *result)
+bool WindowNotifier::winEvent(MSG* message, long* result)
 {
     if (message && message->message == WM_DWMCOMPOSITIONCHANGED) {
         bool compositionEnabled = QtWin::isCompositionEnabled();

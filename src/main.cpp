@@ -19,14 +19,14 @@
 #include "suplchecker.h"
 #include "debuglogger.h"
 
-void messageOutput(QtMsgType type, const char *msg)
+void messageOutput(QtMsgType type, const char* msg)
 {
     QString originalMsg = QString::fromUtf8(msg);
     QString outputLine;
 
     switch (type) {
     case QtDebugMsg:
-            outputLine = originalMsg;
+        outputLine = originalMsg;
         break;
 
     case QtWarningMsg:
@@ -43,14 +43,15 @@ void messageOutput(QtMsgType type, const char *msg)
         break;
     }
 
-    if (outputLine.isEmpty())
+    if (outputLine.isEmpty()) {
         return;
+    }
 
-    outputLine.prepend("[" + QTime::currentTime().toString("hh:mm:ss:zzz") +"] ");
+    outputLine.prepend("[" + QTime::currentTime().toString("hh:mm:ss:zzz") + "] ");
     DebugLogger::recordLog(outputLine);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     qInstallMsgHandler(messageOutput);
 

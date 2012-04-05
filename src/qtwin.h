@@ -50,15 +50,15 @@ class QtWin : public QObject
     Q_OBJECT
 public:
     static bool isRunningWindows7();
-    static bool enableBlurBehindWindow(QWidget *widget, bool enable = true);
-    static bool extendFrameIntoClientArea(QWidget *widget,
+    static bool enableBlurBehindWindow(QWidget* widget, bool enable = true);
+    static bool extendFrameIntoClientArea(QWidget* widget,
                                           int left = -1, int top = -1,
                                           int right = -1, int bottom = -1);
     static bool isCompositionEnabled();
     static QColor colorizationColor();
 
 private:
-    static WindowNotifier *windowNotifier();
+    static WindowNotifier* windowNotifier();
 };
 
 #endif // QTWIN_H

@@ -1,19 +1,20 @@
-/*  SuplChecker - simple program to check a teacher's absencies at the school
-    Copyright (C) 2010-2011  David Rosca
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/* ============================================================
+* SuplChecker - simple program to check a teacher's absencies at school
+* Copyright (C) 2010-2012  David Rosca <david@rosca.cz>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* ============================================================ */
 #include "globalsettings.h"
 #include "globalfunctions.h"
 #include <QApplication>
@@ -55,12 +56,18 @@ void GlobalSettings::loadSettings()
 {
     DataDir = qApp->applicationDirPath() + "/data/";
 
+    // Ensuring settings file is writeable
+    QFile settingsFile(DataDir + "/settings.ini");
+    if (settingsFile.exists()) {
+        settingsFile.setPermissions(QFile::ReadUser | QFile::WriteUser);
+    }
+
     QSettings settings(DataDir + "/settings.ini", QSettings::IniFormat);
     settings.beginGroup("Obecne");
     AvailableServers = settings.value("servers", QStringList() << "http://g8mb.cz/bakaweb/" << "http://gserver/bakaweb/").toStringList();
     ShowDaysWithoutSubs = settings.value("zobrazitDnyBezSuplovani", true).toBool();
     CheckUpdates = settings.value("sledovatAktualizace", true).toBool();
-    setBackgroundPixmap( settings.value("pozadi", "bg-blue.png").toString() );
+    setBackgroundPixmap(settings.value("pozadi", "bg-blue.png").toString());
     settings.endGroup();
 
     settings.beginGroup("Uzivatele");
@@ -72,10 +79,12 @@ void GlobalSettings::loadSettings()
     settings.endGroup();
 
     for (int i = 0; i < names.count(); i++) {
-        if (passwords.count() <= i)
+        if (passwords.count() <= i) {
             continue;
-        if (realNames.count() <= i)
+        }
+        if (realNames.count() <= i) {
             continue;
+        }
 
         User user;
         user.name = names.at(i);
@@ -85,7 +94,7 @@ void GlobalSettings::loadSettings()
     }
 
     if (actUser != "") {
-        foreach (User usr, AllUsers) {
+        foreach(User usr, AllUsers) {
             if (usr.name == actUser) {
                 StartupUser = usr;
                 return;
@@ -110,7 +119,7 @@ void GlobalSettings::saveSettings()
     QStringList names;
     QStringList passwords;
     QStringList realNames;
-    foreach (User usr, AllUsers) {
+    foreach(User usr, AllUsers) {
         names.append(usr.name);
         passwords.append(usr.password);
         realNames.append(usr.realName);

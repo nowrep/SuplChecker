@@ -27,7 +27,8 @@ SOURCES = main.cpp\
     serversdialog.cpp \
     suplchecker.cpp \
     updatechecker.cpp \
-    webview.cpp
+    webview.cpp \
+    toolbar.cpp
 
 HEADERS  += \
     parser.h \
@@ -40,7 +41,8 @@ HEADERS  += \
     serversdialog.h \
     suplchecker.h \
     updatechecker.h \
-    webview.h
+    webview.h \
+    toolbar.h
 
 FORMS    += mainwindow.ui \
     nastaveni.ui \

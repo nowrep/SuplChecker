@@ -1,19 +1,20 @@
-/*  SuplChecker - simple program to check a teacher's absencies at the school
-    Copyright (C) 2010-2011  David Rosca
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/* ============================================================
+* SuplChecker - simple program to check a teacher's absencies at school
+* Copyright (C) 2010-2012  David Rosca <david@rosca.cz>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* ============================================================ */
 #include "parser.h"
 #include "globalsettings.h"
 #include "globalfunctions.h"
@@ -33,11 +34,21 @@ QString Parser::vrat_den(int den, const QString &zdroj)
 {
     QString vyraz;
     switch (den) {
-        case 1: vyraz = "<tr><td class=\"rozden\" Rowspan=3>Po(.*)<tr><td class=\"rozden\" Rowspan=3>"; break;
-        case 2: vyraz = "<tr><td class=\"rozden\" Rowspan=3>Út(.*)<tr><td class=\"rozden\" Rowspan=3>"; break;
-        case 3: vyraz = "<tr><td class=\"rozden\" Rowspan=3>St(.*)<tr><td class=\"rozden\" Rowspan=3>"; break;
-        case 4: vyraz = "<tr><td class=\"rozden\" Rowspan=3>Čt(.*)<tr><td class=\"rozden\" Rowspan=3>"; break;
-        case 5: vyraz = "<tr><td class=\"rozden\" Rowspan=3>Pá(.*)</tbody></table>"; break;
+    case 1:
+        vyraz = "<tr><td class=\"rozden\" Rowspan=3>Po(.*)<tr><td class=\"rozden\" Rowspan=3>";
+        break;
+    case 2:
+        vyraz = "<tr><td class=\"rozden\" Rowspan=3>Út(.*)<tr><td class=\"rozden\" Rowspan=3>";
+        break;
+    case 3:
+        vyraz = "<tr><td class=\"rozden\" Rowspan=3>St(.*)<tr><td class=\"rozden\" Rowspan=3>";
+        break;
+    case 4:
+        vyraz = "<tr><td class=\"rozden\" Rowspan=3>Čt(.*)<tr><td class=\"rozden\" Rowspan=3>";
+        break;
+    case 5:
+        vyraz = "<tr><td class=\"rozden\" Rowspan=3>Pá(.*)</tbody></table>";
+        break;
     }
 
     QRegExp rx(vyraz, Qt::CaseInsensitive);
@@ -45,15 +56,26 @@ QString Parser::vrat_den(int den, const QString &zdroj)
     rx.indexIn(zdroj);
     QString captured = rx.cap(1);
     switch (den) {
-        case 1: captured = "<tr><td class=\"rozden\" Rowspan=3>Po" + captured; break;
-        case 2: captured = "<tr><td class=\"rozden\" Rowspan=3>Út" + captured; break;
-        case 3: captured = "<tr><td class=\"rozden\" Rowspan=3>St" + captured; break;
-        case 4: captured = "<tr><td class=\"rozden\" Rowspan=3>Čt" + captured; break;
-        case 5: captured = "<tr><td class=\"rozden\" Rowspan=3>Pá" + captured; break;
+    case 1:
+        captured = "<tr><td class=\"rozden\" Rowspan=3>Po" + captured;
+        break;
+    case 2:
+        captured = "<tr><td class=\"rozden\" Rowspan=3>Út" + captured;
+        break;
+    case 3:
+        captured = "<tr><td class=\"rozden\" Rowspan=3>St" + captured;
+        break;
+    case 4:
+        captured = "<tr><td class=\"rozden\" Rowspan=3>Čt" + captured;
+        break;
+    case 5:
+        captured = "<tr><td class=\"rozden\" Rowspan=3>Pá" + captured;
+        break;
     }
 
-    if (rx.indexIn(zdroj))
+    if (rx.indexIn(zdroj)) {
         return captured;
+    }
 
     return ""; // den nebyl nalezen -> bug?
 }
@@ -103,20 +125,25 @@ QString Parser::checkni_tyden(const QString &zdroj)
     bool ct_supl = zjisti_supl(ctvrtek);
     bool pa_supl = zjisti_supl(patek);
 
-    if (po_supl)
+    if (po_supl) {
         vystup += pondeli + "\n";
+    }
 
-    if (ut_supl)
+    if (ut_supl) {
         vystup += utery + "\n";
+    }
 
-    if (st_supl)
+    if (st_supl) {
         vystup += streda + "\n";
+    }
 
-    if (ct_supl)
+    if (ct_supl) {
         vystup += ctvrtek + "\n";
+    }
 
-    if (pa_supl)
+    if (pa_supl) {
         vystup += patek + "\n";
+    }
 
 
     return vystup;
@@ -126,8 +153,9 @@ QByteArray Parser::pripravHtml(bool includeExtraStyl)
 {
     QByteArray html = sc_readAllFileContents(":html/result.html");
     QByteArray style = sc_readAllFileContents(":html/styl.css");
-    if (includeExtraStyl)
+    if (includeExtraStyl) {
         style.append(sc_readAllFileContents(":html/extrastyl.css"));
+    }
 
     style.replace("%BG-IMG-NAME%", GlobalSettings::BackgroundPixmapName.toAscii());
     html.replace("%CSS-STYLE%", style);
@@ -187,9 +215,9 @@ void Parser::parsuj_dalsi(const QString &zdroj, const QString &soubor)
         body.append(captured);
         body.append("</tbody></table>");
     }
-    else if (soubor=="pololetni.html") {
+    else if (soubor == "pololetni.html") {
         QString vyraz = "<div class=\"modulin\" >(.*)</tbody></table>";
-        QRegExp rx(vyraz, Qt::CaseInsensitive );
+        QRegExp rx(vyraz, Qt::CaseInsensitive);
         rx.setMinimal(true);
         rx.indexIn(zdroj);
         QString captured = rx.cap(0);
@@ -204,7 +232,7 @@ void Parser::parsuj_dalsi(const QString &zdroj, const QString &soubor)
     }
     else if (soubor == "planakci.html") {
         QString vyraz = "<table class=\"pltable\"(.*)</tbody></table>";
-        QRegExp rx(vyraz, Qt::CaseInsensitive );
+        QRegExp rx(vyraz, Qt::CaseInsensitive);
         rx.setMinimal(true);
         rx.indexIn(zdroj);
         QString captured = rx.cap(0);
@@ -254,10 +282,11 @@ QString Parser::send_request(const QUrl &url, Operation method, QByteArray postD
 
     QNetworkReply* reply;
     QNetworkRequest req(url);
-    req.setRawHeader("User-Agent", "SuplChecker by David Rosca");
+    req.setRawHeader("User-Agent", "SuplChecker 1.0.1 by David Rosca (http://www.suplchecker.wz.cz)");
 
-    if (method == GET)
+    if (method == GET) {
         reply = m_manager->get(req);
+    }
     else if (method == POST) {
         req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
         reply = m_manager->post(req, postData);
@@ -286,12 +315,8 @@ void Parser::startWork()
 {
     qDebug() << "starting loading thread id: " << currentThreadId();
 
-    emit loading(true);
     work();
-
     exit();
-    emit loading(false);
-    emit deleteNow();
 
     qDebug() << "finishing thread id: " << currentThreadId();
 }
@@ -300,15 +325,16 @@ void Parser::work()
 {
     m_manager = new QNetworkAccessManager(this);
 
-    foreach (QString sr, GlobalSettings::AvailableServers) {
+    foreach(QString sr, GlobalSettings::AvailableServers) {
         bool isOnline = isServerOnline(sr);
         if (isOnline) {
             qDebug() << "server " << sr << " is online";
             m_activeServer = sr;
             break;
         }
-        else
+        else {
             qDebug() << "server" << sr << " is offline";
+        }
     }
 
     if (m_activeServer.isEmpty()) {
@@ -419,4 +445,6 @@ void Parser::work()
 Parser::~Parser()
 {
     delete m_manager;
+
+    qDebug() << "deleted thread id: " << currentThreadId();
 }
