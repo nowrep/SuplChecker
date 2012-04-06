@@ -72,7 +72,6 @@ private slots:
     void errorNoStartupUser();
     void aboutToShowUsersMenu();
     void aboutProgram();
-    void chyba(Parser::Error er);
     void showSettingsDialog();
     void aktualizace(QString nova, QString changelog);
     void jmeno(const Parser::Student &s);
@@ -82,10 +81,14 @@ private slots:
     void vybrano(QString text);
     void deleteThread();
 
+    void slotChyba(Parser::Error er);
+
     void userModified(const GlobalSettings::User &before, const GlobalSettings::User &after);
 
 private:
     void closeEvent(QCloseEvent* e);
+
+    void chyba(Parser::Error er);
 
     Ui::SuplChecker* ui;
     QToolButton* m_usersButton;

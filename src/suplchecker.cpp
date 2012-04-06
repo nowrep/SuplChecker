@@ -52,7 +52,6 @@ SuplChecker::SuplChecker(QWidget* parent)
     , ui(new Ui::SuplChecker)
     , m_aboutDialog(0)
     , m_threadParser(0)
-    , m_errorFrame(0)
     , m_isLoading(false)
 {
     GlobalSettings::loadSettings();
@@ -164,7 +163,7 @@ void SuplChecker::startLoading(GlobalSettings::User user)
 
     connect(m_threadParser, SIGNAL(studentName(Parser::Student)), this, SLOT(jmeno(Parser::Student)));
     connect(m_threadParser, SIGNAL(done(QString, QByteArray)), this, SLOT(nacti(QString, QByteArray)));
-    connect(m_threadParser, SIGNAL(error(Parser::Error)), this, SLOT(chyba(Parser::Error)));
+    connect(m_threadParser, SIGNAL(error(Parser::Error)), this, SLOT(slotChyba(Parser::Error)));
     connect(m_threadParser, SIGNAL(finished()), this, SLOT(deleteThread()));
 
     m_threadParser->start();
@@ -271,10 +270,15 @@ void SuplChecker::aktualizace(QString nova, QString changelog)
     msgBox.exec();
 }
 
-void SuplChecker::chyba(Parser::Error er)
+void SuplChecker::slotChyba(Parser::Error er)
 {
     CHECK_THREAD;
 
+    chyba(er);
+}
+
+void SuplChecker::chyba(Parser::Error er)
+{
     QString errorString;
     QPixmap icon;
 
